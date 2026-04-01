@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VigilIA — Drone Nacional Asa Fixa Solar</title>
+  <link rel="stylesheet" href="css/vigilia.css">
+    <!-- overrides pontuais: adicione aqui se necessário -->
+</head>
+<body>
+
+  <nav id="navbar">
+    <div class="nav-logo">VigilIA</div>
+    <ul class="nav-links">
+      <li><a href="#secao-1" data-section="secao-1">INÍCIO</a></li>
+      <li><a href="#secao-2" data-section="secao-2">ESTRUTURA</a></li>
+      <li><a href="#secao-3" data-section="secao-3">COMPONENTES</a></li>
+      <li><a href="#secao-4" data-section="secao-4">CRONOGRAMA</a></li>
+      <li><a href="#secao-5" data-section="secao-5">DADOS</a></li>
+      <li><a href="#secao-6" data-section="secao-6">ROADMAP</a></li>
+      <li><a href="#secao-7" data-section="secao-7">COMPARATIVO</a></li>
+    </ul>
+  </nav>
+
+  <canvas id="matrix-canvas"></canvas>
+
+  <section id="secao-1">
+    <div class="hero-wrapper">
+      <div class="hero-text">
+        <div class="hero-tag">[ PROJETO NACIONAL · FASE F2 ATIVA ]</div>
+        <h1 class="hero-title">VigilIA</h1>
+        <p class="hero-subtitle" id="hero-subtitle"></p>
+        <div class="hero-tel">
+          <span>☀ SOLAR <strong id="tel-solar">72</strong>%</span>
+          <span>⚡ BAT <strong id="tel-bat">88</strong>%</span>
+          <span>◉ STATUS <strong>NOMINAL</strong></span>
+        </div>
+        <a href="#secao-2" class="hero-cta">▶ VER PROJETO</a>
+      </div>
+      <div class="hero-svg">
+        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"
+             fill="none" stroke="#00ff41" stroke-width="1.5">
+          <!-- Fuselagem -->
+          <ellipse cx="200" cy="110" rx="90" ry="18"/>
+          <!-- Asa esquerda -->
+          <polygon points="110,100 20,85 20,125 110,120"/>
+          <!-- Células solares asa esquerda -->
+          <rect x="30" y="91" width="18" height="12" stroke="#00cc33"/>
+          <rect x="54" y="89" width="18" height="12" stroke="#00cc33"/>
+          <rect x="78" y="87" width="18" height="12" stroke="#00cc33"/>
+          <rect x="102" y="88" width="8" height="10" stroke="#00cc33"/>
+          <!-- Asa direita -->
+          <polygon points="290,100 380,85 380,125 290,120"/>
+          <!-- Células solares asa direita -->
+          <rect x="352" y="91" width="18" height="12" stroke="#00cc33"/>
+          <rect x="328" y="89" width="18" height="12" stroke="#00cc33"/>
+          <rect x="304" y="87" width="18" height="12" stroke="#00cc33"/>
+          <rect x="290" y="88" width="8" height="10" stroke="#00cc33"/>
+          <!-- Rotor VTOL esquerdo frontal -->
+          <circle cx="30" cy="88" r="14"/>
+          <line x1="30" y1="74" x2="30" y2="102"/>
+          <line x1="16" y1="88" x2="44" y2="88"/>
+          <!-- Rotor VTOL esquerdo traseiro -->
+          <circle cx="22" cy="118" r="12"/>
+          <line x1="22" y1="106" x2="22" y2="130"/>
+          <line x1="10" y1="118" x2="34" y2="118"/>
+          <!-- Rotor VTOL direito frontal -->
+          <circle cx="370" cy="88" r="14"/>
+          <line x1="370" y1="74" x2="370" y2="102"/>
+          <line x1="356" y1="88" x2="384" y2="88"/>
+          <!-- Rotor VTOL direito traseiro -->
+          <circle cx="378" cy="118" r="12"/>
+          <line x1="378" y1="106" x2="378" y2="130"/>
+          <line x1="366" y1="118" x2="390" y2="118"/>
+          <!-- V-tail esquerda -->
+          <line x1="110" y1="112" x2="140" y2="175"/>
+          <!-- V-tail direita -->
+          <line x1="290" y1="112" x2="260" y2="175"/>
+          <!-- Motor pusher -->
+          <circle cx="200" cy="185" r="10"/>
+          <line x1="200" y1="175" x2="200" y2="195"/>
+          <line x1="190" y1="185" x2="210" y2="185"/>
+          <!-- Antena -->
+          <line x1="200" y1="92" x2="200" y2="68"/>
+          <circle cx="200" cy="65" r="3" fill="#00ff41"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-2">
+    <div class="section-container">
+      <h2 class="section-title">// SUBSISTEMAS</h2>
+      <div class="subsys-grid">
+        <div class="subsys-card">
+          <div class="subsys-num">01</div>
+          <h3>Estrutura &amp; Fuselagem</h3>
+          <p>Corpo em fibra de carbono (CFRP) com núcleo em espuma Rohacell. Perfil aerodinâmico asa alta com longarina de carbono pultrudado. Envergadura: 2,8 m. MTOW: 7 kg. Coeficiente de sustentação (Cl): 1,4.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">02</div>
+          <h3>Propulsão VTOL</h3>
+          <p>4 motores brushless T-Motor MN3110 (700 kV) em suportes recolhíveis de CFRP. Hélices 12×4,5. Usados exclusivamente em decolagem e pouso. Consumo total VTOL: 480 W.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">03</div>
+          <h3>Propulsão Pusher</h3>
+          <p>Motor pusher traseiro T-Motor AT2317 para cruzeiro em voo de asa fixa. Hélice de passo variável 9×6. Velocidade de cruzeiro: 65 km/h. Consumo nominal: 55 W.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">04</div>
+          <h3>Sistema Solar</h3>
+          <p>28 células fotovoltaicas SunPower C60 distribuídas nas asas (área ativa: 0,48 m²). Potência de pico: 96 W. Controlador MPPT Genasun GVB-8. Geração média diária (latitude 20° S): 410 Wh.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">05</div>
+          <h3>Armazenamento de Energia</h3>
+          <p>Pack LiPo 6S 10.000 mAh (Tattu R-Line). Tensão nominal: 22,2 V. Energia útil: 190 Wh. BMS integrado com balanceamento ativo. Temperatura operacional: −10 °C a 50 °C.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">06</div>
+          <h3>Aviônica &amp; Piloto Automático</h3>
+          <p>Controlador de voo Pixhawk 6C com ArduPlane 4.4. Transição VTOL→asa fixa em 8 s a 30 m AGL. Modos: Auto, Loiter, RTL, FBWA. GPS RTK Here3+ (precisão 2 cm). IMU redundante.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">07</div>
+          <h3>Comunicações</h3>
+          <p>Telemetria RFD900x (915 MHz, alcance 40 km). Uplink de vídeo 5,8 GHz com encoder H.265. Módulo 4G LTE de backup (SIM A2). Antena direcional omnidirecional no solo.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">08</div>
+          <h3>Carga Útil</h3>
+          <p>Gimbal tri-eixo Gremsy T3 com câmera Sony IMX477 (12 MP). EO/IR opcional (FLIR Boson 640). Peso máximo de payload: 800 g. Interface CAN + USB-C para troca rápida.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">09</div>
+          <h3>Software Embarcado (IA)</h3>
+          <p>Jetson Orin NX 16 GB para inferência embarcada em tempo real. Modelos: YOLOv8n (detecção de pessoas/veículos, 45 FPS), segmentação de rota, detecção de anomalias térmicas. Edge inference sem conexão cloud.</p>
+        </div>
+        <div class="subsys-card">
+          <div class="subsys-num">10</div>
+          <h3>Estação de Solo (GCS)</h3>
+          <p>Software Mission Planner + overlay customizado VigilIA-HUD. Mapa offline OpenStreetMap. Planejamento de missão por polígono. Log automático em SQLite. Dashboard web em React para visualização histórica.</p>
+        </div>
+      </div>
+
+      <h3 class="subsection-title">// FLUXO DE ENERGIA</h3>
+      <table class="energy-table">
+        <thead>
+          <tr>
+            <th>Fonte</th><th>Potência (W)</th><th>Energia/dia (Wh)</th><th>Consumidor</th><th>Balanço</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Painel Solar</td><td>96</td><td>410</td><td>Sistema total</td><td class="pos">+</td></tr>
+          <tr><td>Bateria (descarga)</td><td>220</td><td>190</td><td>VTOL + cruzeiro</td><td class="neg">−</td></tr>
+          <tr><td>Cruzeiro (pusher)</td><td>55</td><td>275</td><td>Motor pusher</td><td class="neg">−</td></tr>
+          <tr><td>Aviônica + comms</td><td>22</td><td>110</td><td>Pixhawk + RFD + Jetson</td><td class="neg">−</td></tr>
+          <tr><td>Payload câmera</td><td>18</td><td>90</td><td>Gimbal + IMX477</td><td class="neg">−</td></tr>
+          <tr><td>Saldo diário (sol 4,5h)</td><td>—</td><td><strong>−265</strong></td><td>Recarga necessária</td><td class="neg">△</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="secao-3">
+    <div class="section-container">
+      <h2 class="section-title">// COMPONENTES</h2>
+      <div class="comp-tabs">
+        <button class="comp-tab active" data-panel="importados">IMPORTADOS (10)</button>
+        <button class="comp-tab" data-panel="nacionais">FABRICAÇÃO NACIONAL (10)</button>
+        <button class="comp-tab" data-panel="desenvolver">A DESENVOLVER (6)</button>
+      </div>
+
+      <div id="panel-importados" class="comp-panel active">
+        <div class="comp-grid">
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>T-Motor MN3110</h4>
+            <p>Motor brushless VTOL 700 kV. Origem: China. Torque máx: 0,45 N·m. Preço unit.: ~R$ 280.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>T-Motor AT2317</h4>
+            <p>Motor pusher 1400 kV para cruzeiro. Origem: China. Preço unit.: ~R$ 180.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>SunPower C60</h4>
+            <p>Célula solar monocristalina 3,4 W (22% eficiência). Origem: EUA/Taiwan. Preço unit.: ~R$ 45.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>Pixhawk 6C</h4>
+            <p>Controlador de voo open-source. STM32H7. Origem: China/EUA. Preço: ~R$ 1.400.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>Tattu R-Line 6S 10Ah</h4>
+            <p>Pack LiPo de alta descarga (95C). Origem: China. Energia: 222 Wh. Preço: ~R$ 950.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>RFD900x</h4>
+            <p>Rádio telemetria longo alcance 915 MHz (40 km). Origem: Austrália. Preço: ~R$ 2.200.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>Jetson Orin NX 16GB</h4>
+            <p>Módulo de IA embarcada (100 TOPS). Origem: EUA. Preço: ~R$ 3.800.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>Gremsy T3</h4>
+            <p>Gimbal tri-eixo estabilizado para câmera Sony. Origem: Vietnã. Preço: ~R$ 4.500.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>Here3+ RTK</h4>
+            <p>GPS RTK CAN com precisão 2 cm. Origem: China. Preço: ~R$ 1.100.</p>
+          </div>
+          <div class="comp-card import">
+            <div class="comp-tag">IMPORTADO</div>
+            <h4>Genasun GVB-8</h4>
+            <p>MPPT para células solares, saída 22,2 V / 8 A. Origem: EUA. Preço: ~R$ 680.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-nacionais" class="comp-panel">
+        <div class="comp-grid">
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Fuselagem CFRP</h4>
+            <p>Moldagem por infusão a vácuo em fibra de carbono 3K 200g/m². Produzida em SP. Custo estimado: R$ 2.800/unidade.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Asa principal</h4>
+            <p>Nervuras em PLA-CF cortadas em CNC, longarina pultrudada importada, revestimento em Oracover. Fabricação local. Custo: R$ 1.200.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Suportes VTOL recolhíveis</h4>
+            <p>Perfil CFRP quadrado 10×10 mm com dobradiça em alumínio 6061 usinado. Fabricação: oficina parceira MG. Custo: R$ 480.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>PCB Distribuição de Potência</h4>
+            <p>Power Distribution Board customizada com proteção por fusível 40A e monitoramento de corrente por shunt. Produzida em parceiro EMS local. Custo: R$ 320/placa.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Case da GCS</h4>
+            <p>Maleta Pelican 1510 adaptada com painel frontal em alumínio anodizado, 3 conectores LEMO e tela 10" embedded. Integração local. Custo: R$ 1.800.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Software GCS HUD</h4>
+            <p>Overlay VigilIA-HUD desenvolvido internamente em Python/PyQt5. Open-source. Custo de desenvolvimento: incorporado ao projeto.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Carenagem da Carga Útil</h4>
+            <p>Impressão 3D em PETG com acabamento em epóxi. Encaixe rápido (quarter-turn). Fabricação interna. Custo: R$ 95/peça.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Trem de pouso VTOL</h4>
+            <p>Fibra de vidro com amortecedor em borracha siliconada. Fixação por pino de titânio. Fabricação: parceiro aeronáutico CE. Custo: R$ 360.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Hélices CNC</h4>
+            <p>Hélices 12×4,5 fresadas em fibra de carbono balanceadas estaticamente. Fabricação em torno CNC 4 eixos. Custo: R$ 220/par.</p>
+          </div>
+          <div class="comp-card nacional">
+            <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
+            <h4>Modelos de IA embarcados</h4>
+            <p>Modelos YOLOv8 treinados e exportados para TensorRT com dataset nacional anotado (15.000 imagens). Desenvolvido internamente. Custo: GPUs em nuvem ~R$ 800.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-desenvolver" class="comp-panel">
+        <div class="comp-grid">
+          <div class="comp-card desenvolver">
+            <div class="comp-tag">A DESENVOLVER</div>
+            <h4>ESC Inteligente Nacional</h4>
+            <p>Controlador eletrônico de velocidade com telemetria CAN integrada e proteção térmica. Substituirá ESCs importados. Fase: prototipagem F3.</p>
+          </div>
+          <div class="comp-card desenvolver">
+            <div class="comp-tag">A DESENVOLVER</div>
+            <h4>BMS Nacional</h4>
+            <p>Battery Management System com balanceamento ativo, SOH estimado por ML e interface CAN. Fase: especificação F3.</p>
+          </div>
+          <div class="comp-card desenvolver">
+            <div class="comp-tag">A DESENVOLVER</div>
+            <h4>MPPT Nacional</h4>
+            <p>Substituição do Genasun por controlador solar MPPT com rastreamento perturba-e-observa desenvolvido em hardware aberto. Fase: pesquisa F4.</p>
+          </div>
+          <div class="comp-card desenvolver">
+            <div class="comp-tag">A DESENVOLVER</div>
+            <h4>Módulo de Detecção Acústica</h4>
+            <p>Array de microfones MEMS para detecção de disparos e alarmes no solo, processado no Jetson. Fase: pesquisa F4.</p>
+          </div>
+          <div class="comp-card desenvolver">
+            <div class="comp-tag">A DESENVOLVER</div>
+            <h4>Antena Direcional de Rastreio</h4>
+            <p>Antena Yagi autorastreadora em azimute/elevação para link de 40+ km. Controle por Arduino + MAVLink. Fase: F3.</p>
+          </div>
+          <div class="comp-card desenvolver">
+            <div class="comp-tag">A DESENVOLVER</div>
+            <h4>Plataforma de Certificação ANAC</h4>
+            <p>Documentação técnica e processos para enquadramento RFN-RPAS. Parceria com instituição certificadora. Fase: F5–F6.</p>
+          </div>
+        </div>
+
+        <h3 class="subsection-title">// TABELA DE CUSTOS — PROTÓTIPO P1</h3>
+        <table class="cost-table">
+          <thead>
+            <tr><th>Categoria</th><th>Itens</th><th>Custo Estimado (R$)</th><th>% do Total</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Componentes Importados</td><td>10</td><td>15.130</td><td>47%</td></tr>
+            <tr><td>Fabricação Nacional</td><td>10</td><td>8.073</td><td>25%</td></tr>
+            <tr><td>Desenvolvimento de Software</td><td>—</td><td>4.800</td><td>15%</td></tr>
+            <tr><td>Testes e Certificação</td><td>—</td><td>3.200</td><td>10%</td></tr>
+            <tr><td>Contingência (10%)</td><td>—</td><td>3.120</td><td>—</td></tr>
+            <tr class="total"><td colspan="2">TOTAL P1</td><td>34.323</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-4">
+    <div class="section-container">
+      <h2 class="section-title">// CRONOGRAMA DE DESENVOLVIMENTO</h2>
+      <div class="timeline">
+
+        <div class="tl-node completed" data-phase="F1">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F1</span>
+            <span class="tl-name">Conceituação &amp; Requisitos</span>
+            <span class="tl-date">Jan–Mar 2024</span>
+            <span class="tl-status">CONCLUÍDO</span>
+          </div>
+          <div class="tl-body">
+            <p>Definição de requisitos operacionais: alcance 30 km, endurance 4 h, MTOW 7 kg. Revisão bibliográfica de drones solares VTOL. Análise de concorrentes nacionais e internacionais. Escolha da configuração asa fixa + VTOL. Entregáveis: SRD v1.0, análise de mercado.</p>
+          </div>
+        </div>
+
+        <div class="tl-node completed" data-phase="F2">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F2</span>
+            <span class="tl-name">Design Preliminar &amp; Simulações</span>
+            <span class="tl-date">Abr–Set 2024</span>
+            <span class="tl-status">CONCLUÍDO</span>
+          </div>
+          <div class="tl-body">
+            <p>CFD em OpenFOAM para perfil NACA 4415. Análise estrutural FEA (Ansys). Dimensionamento do sistema solar com PVsyst. Seleção de componentes e BOM preliminar. Simulação de transição VTOL→asa fixa em X-Plane. Entregáveis: PDR, BOM v1.0, relatório CFD.</p>
+          </div>
+        </div>
+
+        <div class="tl-node pending" data-phase="F3">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F3</span>
+            <span class="tl-name">Fabricação do Protótipo P1</span>
+            <span class="tl-date">Out 2024–Mar 2025</span>
+            <span class="tl-status">PLANEJADO</span>
+          </div>
+          <div class="tl-body">
+            <p>Moldagem da fuselagem em CFRP. Fabricação das asas e suportes VTOL. Montagem da eletrônica e integração do Pixhawk. Integração do sistema solar e BMS. Testes em bancada de todos os subsistemas. Entregáveis: Protótipo P1, relatório de testes em bancada.</p>
+          </div>
+        </div>
+
+        <div class="tl-node pending" data-phase="F4">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F4</span>
+            <span class="tl-name">Testes de Voo</span>
+            <span class="tl-date">Abr–Jun 2025</span>
+            <span class="tl-status">PLANEJADO</span>
+          </div>
+          <div class="tl-body">
+            <p>Voos de decolagem e pouso VTOL (10 sorties). Voos de transição VTOL→asa fixa. Voos de endurance (meta: 4 h). Testes de payload e gimbal. Ajuste de PID e tuning do ArduPlane. Entregáveis: relatório de testes de voo, dados de telemetria, vídeo de demonstração.</p>
+          </div>
+        </div>
+
+        <div class="tl-node pending" data-phase="F5">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F5</span>
+            <span class="tl-name">Integração de IA &amp; Missões Piloto</span>
+            <span class="tl-date">Jul–Set 2025</span>
+            <span class="tl-status">PLANEJADO</span>
+          </div>
+          <div class="tl-body">
+            <p>Deploy dos modelos YOLOv8 no Jetson Orin. Missão piloto de vigilância urbana (parceria prefeitura). Validação de detecção em cenário real. Relatório de desempenho de IA. Refinamento do dataset com dados reais.</p>
+          </div>
+        </div>
+
+        <div class="tl-node pending" data-phase="F6">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F6</span>
+            <span class="tl-name">Certificação ANAC &amp; Produção P2</span>
+            <span class="tl-date">Out 2025–Mar 2026</span>
+            <span class="tl-status">PLANEJADO</span>
+          </div>
+          <div class="tl-body">
+            <p>Processo de habilitação RFN-RPAS na ANAC. Produção do segundo protótipo P2 com melhorias. Testes de confiabilidade (MTBF). Negociação com potenciais clientes (segurança pública, agro). Entregáveis: certificado ANAC, P2 operacional.</p>
+          </div>
+        </div>
+
+        <div class="tl-node pending" data-phase="F7">
+          <div class="tl-dot"></div>
+          <div class="tl-header">
+            <span class="tl-phase">F7</span>
+            <span class="tl-name">Comercialização &amp; Escala</span>
+            <span class="tl-date">2026+</span>
+            <span class="tl-status">FUTURO</span>
+          </div>
+          <div class="tl-body">
+            <p>Lançamento comercial. Linha de produção semiautomatizada. Meta: 12 unidades/ano no primeiro ciclo. Versão exportação com frequências homologadas. Formação de distribuidores regionais.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 class="subsection-title">// MATRIZ DE RISCOS</h3>
+      <table class="risk-table">
+        <thead>
+          <tr><th>Risco</th><th>Probabilidade</th><th>Impacto</th><th>Fase</th><th>Mitigação</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Falha na transição VTOL→asa fixa</td>
+            <td class="risk-med">MÉDIA</td><td class="risk-high">ALTO</td><td>F3–F4</td>
+            <td>Simulação extensiva em X-Plane; net de segurança nos primeiros voos</td>
+          </tr>
+          <tr>
+            <td>Desempenho solar abaixo do esperado</td>
+            <td class="risk-med">MÉDIA</td><td class="risk-med">MÉDIO</td><td>F3–F4</td>
+            <td>Margem de 20% no dimensionamento; bateria de backup dimensionada para missão completa</td>
+          </tr>
+          <tr>
+            <td>Atraso na certificação ANAC</td>
+            <td class="risk-high">ALTA</td><td class="risk-med">MÉDIO</td><td>F5–F6</td>
+            <td>Início do processo em F3; consultoria especializada em RBAC-E94</td>
+          </tr>
+          <tr>
+            <td>Custo de importação de componentes</td>
+            <td class="risk-med">MÉDIA</td><td class="risk-med">MÉDIO</td><td>Todas</td>
+            <td>Estoque de componentes críticos para 3 unidades; fornecedores alternativos mapeados</td>
+          </tr>
+          <tr>
+            <td>Falha estrutural em voo</td>
+            <td class="risk-low">BAIXA</td><td class="risk-high">ALTO</td><td>F4</td>
+            <td>FEA com fator de segurança 2,5; inspeção ultrassônica das peças CFRP</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="secao-5">
+    <div class="section-container">
+      <h2 class="section-title">// DADOS TÉCNICOS &amp; DESEMPENHO</h2>
+      <div class="stats-grid">
+        <div class="stat-block">
+          <div class="stat-label">ENVERGADURA</div>
+          <div class="stat-value"><span data-count="280">0</span> cm</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">MTOW</div>
+          <div class="stat-value"><span data-count="7">0</span> kg</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">ENDURANCE</div>
+          <div class="stat-value"><span data-count="4">0</span> h</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">ALCANCE</div>
+          <div class="stat-value"><span data-count="30">0</span> km</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">CRUZEIRO</div>
+          <div class="stat-value"><span data-count="65">0</span> km/h</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">CÉLULAS SOLARES</div>
+          <div class="stat-value"><span data-count="28">0</span> un</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">POTÊNCIA SOLAR</div>
+          <div class="stat-value"><span data-count="96">0</span> W</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">ENERGIA BATERIA</div>
+          <div class="stat-value"><span data-count="190">0</span> Wh</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">PRECISÃO GPS</div>
+          <div class="stat-value"><span data-count="2">0</span> cm</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">FPS DETECÇÃO IA</div>
+          <div class="stat-value"><span data-count="45">0</span> FPS</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">COMPONENTES NACIONAIS</div>
+          <div class="stat-value"><span data-count="53">0</span> %</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-label">TETO OPERACIONAL</div>
+          <div class="stat-value"><span data-count="3000">0</span> m</div>
+        </div>
+      </div>
+
+      <div class="specs-block">
+        <h3 class="subsection-title">// ESPECIFICAÇÕES COMPLETAS</h3>
+        <div class="specs-two-col">
+          <div>
+            <table class="specs-table">
+              <tr><td>Configuração</td><td>Asa fixa + VTOL quadrotor</td></tr>
+              <tr><td>Perfil aerodinâmico</td><td>NACA 4415</td></tr>
+              <tr><td>Comprimento fuselagem</td><td>1,35 m</td></tr>
+              <tr><td>Área alar</td><td>0,72 m²</td></tr>
+              <tr><td>Carga alar</td><td>9,7 kg/m²</td></tr>
+              <tr><td>Fator de carga limite</td><td>+3,5 / −1,5 g</td></tr>
+              <tr><td>Velocidade de estol</td><td>38 km/h</td></tr>
+              <tr><td>Velocidade máxima</td><td>110 km/h</td></tr>
+            </table>
+          </div>
+          <div>
+            <table class="specs-table">
+              <tr><td>Temperatura operacional</td><td>−10 °C a +45 °C</td></tr>
+              <tr><td>Vento máximo operacional</td><td>12 m/s</td></tr>
+              <tr><td>Payload máximo</td><td>800 g</td></tr>
+              <tr><td>Consumo cruzeiro total</td><td>95 W</td></tr>
+              <tr><td>Consumo VTOL (pico)</td><td>480 W</td></tr>
+              <tr><td>Alcance rádio</td><td>40 km (RFD900x)</td></tr>
+              <tr><td>Protocolo de voo</td><td>MAVLink 2 / ArduPlane</td></tr>
+              <tr><td>IP do sistema</td><td>IP54 (fuselagem)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-6">
+    <div class="section-container">
+      <h2 class="section-title">// ROADMAP TECNOLÓGICO</h2>
+      <div class="roadmap-track">
+        <div class="roadmap-line"></div>
+        <div class="roadmap-node done" title="F1 — Conceituação">
+          <div class="rm-circle">F1</div>
+          <div class="rm-label">CONCEITUAÇÃO<br><small>Jan–Mar 2024</small></div>
+        </div>
+        <div class="roadmap-node done" title="F2 — Design">
+          <div class="rm-circle">F2</div>
+          <div class="rm-label">DESIGN<br><small>Abr–Set 2024</small></div>
+        </div>
+        <div class="roadmap-node pending" title="F3 — Fabricação">
+          <div class="rm-circle">F3</div>
+          <div class="rm-label">FABRICAÇÃO<br><small>Out 24–Mar 25</small></div>
+        </div>
+        <div class="roadmap-node pending" title="F4 — Testes">
+          <div class="rm-circle">F4</div>
+          <div class="rm-label">TESTES DE VOO<br><small>Abr–Jun 2025</small></div>
+        </div>
+        <div class="roadmap-node pending" title="F5 — IA">
+          <div class="rm-circle">F5</div>
+          <div class="rm-label">INTEGRAÇÃO IA<br><small>Jul–Set 2025</small></div>
+        </div>
+        <div class="roadmap-node pending" title="F6 — Certificação">
+          <div class="rm-circle">F6</div>
+          <div class="rm-label">CERTIFICAÇÃO<br><small>Out 25–Mar 26</small></div>
+        </div>
+        <div class="roadmap-node pending" title="F7 — Comercial">
+          <div class="rm-circle">F7</div>
+          <div class="rm-label">COMERCIAL<br><small>2026+</small></div>
+        </div>
+      </div>
+
+      <div class="tech-goals">
+        <h3 class="subsection-title">// METAS TECNOLÓGICAS POR FASE</h3>
+        <div class="tech-grid">
+          <div class="tech-card done">
+            <div class="tech-phase">F1–F2 ✓</div>
+            <ul>
+              <li>SRD finalizado</li>
+              <li>CFD concluído</li>
+              <li>BOM v1.0</li>
+              <li>Fornecedores mapeados</li>
+            </ul>
+          </div>
+          <div class="tech-card pending">
+            <div class="tech-phase">F3–F4</div>
+            <ul>
+              <li>Protótipo P1 voando</li>
+              <li>Transição VTOL validada</li>
+              <li>4h de endurance</li>
+              <li>ESC nacional (MVP)</li>
+            </ul>
+          </div>
+          <div class="tech-card pending">
+            <div class="tech-phase">F5–F6</div>
+            <ul>
+              <li>Missão piloto real</li>
+              <li>YOLOv8 @45 FPS embarcado</li>
+              <li>Certificação ANAC</li>
+              <li>P2 operacional</li>
+            </ul>
+          </div>
+          <div class="tech-card pending">
+            <div class="tech-phase">F7+</div>
+            <ul>
+              <li>12 unidades/ano</li>
+              <li>MPPT nacional</li>
+              <li>Detecção acústica</li>
+              <li>Versão exportação</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="secao-7">
+    <div class="section-container">
+      <h2 class="section-title">// COMPARATIVO DE MERCADO</h2>
+      <div class="comp-table-wrapper">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Parâmetro</th>
+              <th class="vigilia-col">VigilIA ◉</th>
+              <th>Wingtra ONE</th>
+              <th>senseFly eBee X</th>
+              <th>AgEagle RX-60</th>
+              <th>AtlasCustom Solar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Configuração</td>
+              <td class="vigilia-col">Asa fixa + VTOL</td>
+              <td>Asa fixa + VTOL</td>
+              <td>Asa voadora</td>
+              <td>Asa fixa</td>
+              <td>Asa fixa solar</td>
+            </tr>
+            <tr>
+              <td>Envergadura</td>
+              <td class="vigilia-col">2,8 m</td>
+              <td>1,26 m</td>
+              <td>1,16 m</td>
+              <td>2,5 m</td>
+              <td>3,2 m</td>
+            </tr>
+            <tr>
+              <td>MTOW</td>
+              <td class="vigilia-col">7 kg</td>
+              <td>4,5 kg</td>
+              <td>1,6 kg</td>
+              <td>5,4 kg</td>
+              <td>8 kg</td>
+            </tr>
+            <tr>
+              <td>Endurance</td>
+              <td class="vigilia-col">4 h</td>
+              <td>55 min</td>
+              <td>90 min</td>
+              <td>3,5 h</td>
+              <td>6 h</td>
+            </tr>
+            <tr>
+              <td>Sistema solar</td>
+              <td class="vigilia-col">Sim (96 W)</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td>Sim</td>
+            </tr>
+            <tr>
+              <td>VTOL</td>
+              <td class="vigilia-col">Sim</td>
+              <td>Sim</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td>Não</td>
+            </tr>
+            <tr>
+              <td>IA embarcada</td>
+              <td class="vigilia-col">Sim (Jetson)</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td>Parcial</td>
+              <td>Não</td>
+            </tr>
+            <tr>
+              <td>Fabricação nacional (BR)</td>
+              <td class="vigilia-col">53%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+            </tr>
+            <tr>
+              <td>Certificação ANAC</td>
+              <td class="vigilia-col">Em andamento</td>
+              <td>Não (EASA)</td>
+              <td>Não (EASA)</td>
+              <td>Não (FAA)</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Preço estimado</td>
+              <td class="vigilia-col">R$ 34.000</td>
+              <td>~R$ 120.000</td>
+              <td>~R$ 85.000</td>
+              <td>~R$ 95.000</td>
+              <td>~R$ 150.000</td>
+            </tr>
+            <tr>
+              <td>Open source</td>
+              <td class="vigilia-col">Parcial</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td>Não</td>
+              <td>Não</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer-block">
+        <p class="footer-note">VigilIA — Projeto open-hardware / open-software de drone nacional. Repositório público após F4.</p>
+        <p class="footer-note">Dados de concorrentes baseados em fichas técnicas públicas (2024).</p>
+      </div>
+    </div>
+  </section>
+
+  <button id="btn-topo" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲ TOPO</button>
+
+  <script src="js/matrix.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
