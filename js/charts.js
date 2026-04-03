@@ -9,83 +9,92 @@ function drawEnergiaChart(canvas) {
   var W = canvas.width, H = canvas.height;
 
   var modos = [
-    { label: 'Decolagem VTOL',   consumo: 300, solar: 70 },
-    { label: 'Subida altitude',  consumo: 165, solar: 70 },
-    { label: 'Cruzeiro motor',   consumo: 100, solar: 70 },
-    { label: 'Planar otimizado', consumo:  40, solar: 70 },
-    { label: 'Patrulha lenta',   consumo:  70, solar: 70 },
-    { label: 'Pouso VTOL',       consumo: 260, solar: 70 }
+    { label: 'Decolagem VTOL',   consumo: 300, solar: 70, cor: '#cc4444' },
+    { label: 'Subida altitude',  consumo: 165, solar: 70, cor: '#cc4444' },
+    { label: 'Cruzeiro motor',   consumo: 100, solar: 70, cor: '#ffaa00' },
+    { label: 'Planar otimizado', consumo:  40, solar: 70, cor: '#00ff41' },
+    { label: 'Patrulha lenta',   consumo:  70, solar: 70, cor: '#ffaa00' },
+    { label: 'Pouso VTOL',       consumo: 260, solar: 70, cor: '#cc4444' }
   ];
 
-  var paddingLeft = 130, paddingRight = 20, paddingTop = 20, paddingBottom = 30;
-  var chartW = W - paddingLeft - paddingRight;
-  var chartH = H - paddingTop - paddingBottom;
+  var padL = 150, padR = 70, padT = 20, padB = 45;
+  var chartW = W - padL - padR;
+  var chartH = H - padT - padB;
   var maxVal = 320;
-  var barH = Math.floor((chartH / modos.length) * 0.35);
-  var groupH = Math.floor(chartH / modos.length);
+  var n = modos.length;
+  var rowH = chartH / n;
+  var barH = Math.floor(rowH * 0.28);
+  var gap = 3;
 
-  ctx.clearRect(0, 0, W, H);
+  function xPos(val) { return padL + (val / maxVal) * chartW; }
 
-  // Grid lines
-  for (var g = 0; g <= maxVal; g += 50) {
-    var gx = paddingLeft + (g / maxVal) * chartW;
-    ctx.strokeStyle = 'rgba(0,51,0,0.4)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(gx, paddingTop);
-    ctx.lineTo(gx, H - paddingBottom);
-    ctx.stroke();
-    ctx.fillStyle = '#446644';
-    ctx.font = '10px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText(g + 'W', gx, H - paddingBottom + 14);
+  function drawGrid() {
+    var steps = [0, 50, 100, 150, 200, 250, 300];
+    steps.forEach(function(g) {
+      var gx = xPos(g);
+      ctx.strokeStyle = 'rgba(0,51,0,0.5)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 5]);
+      ctx.beginPath();
+      ctx.moveTo(gx, padT);
+      ctx.lineTo(gx, H - padB);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#335533';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(g + 'W', gx, H - padB + 16);
+    });
   }
 
   var startTime = null;
-  var duration = 800;
+  var duration = 900;
 
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
 
     ctx.clearRect(0, 0, W, H);
+    drawGrid();
 
-    // Re-draw grid
-    for (var g = 0; g <= maxVal; g += 50) {
-      var gx = paddingLeft + (g / maxVal) * chartW;
-      ctx.strokeStyle = 'rgba(0,51,0,0.4)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(gx, paddingTop);
-      ctx.lineTo(gx, H - paddingBottom);
-      ctx.stroke();
-      ctx.fillStyle = '#446644';
-      ctx.font = '10px monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(g + 'W', gx, H - paddingBottom + 14);
-    }
+    ctx.strokeStyle = 'rgba(0,80,0,0.6)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, H - padB);
+    ctx.stroke();
 
     modos.forEach(function(m, i) {
-      var y = paddingTop + i * groupH;
-      var consumoColor = m.consumo > m.solar + 20 ? '#cc4444'
-                       : m.consumo < m.solar - 10 ? '#00ff41'
-                       : '#ffaa00';
+      var baseY = padT + i * rowH + rowH * 0.12;
 
-      // Label
       ctx.fillStyle = '#88bb88';
       ctx.font = '12px monospace';
       ctx.textAlign = 'right';
-      ctx.fillText(m.label, paddingLeft - 8, y + groupH * 0.4);
+      ctx.fillText(m.label, padL - 10, baseY + barH + 2);
 
-      // Barra consumo
-      var cW = (m.consumo / maxVal) * chartW * progress;
-      ctx.fillStyle = consumoColor;
-      ctx.fillRect(paddingLeft, y + 4, cW, barH);
+      var cW = (m.consumo / maxVal) * chartW * ease;
+      ctx.fillStyle = m.cor;
+      ctx.fillRect(padL, baseY, cW, barH);
 
-      // Barra solar
-      var sW = (m.solar / maxVal) * chartW * progress;
+      if (ease > 0.5) {
+        ctx.fillStyle = m.cor;
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(m.consumo + 'W', padL + cW + 4, baseY + barH - 2);
+      }
+
+      var sW = (m.solar / maxVal) * chartW * ease;
       ctx.fillStyle = '#006622';
-      ctx.fillRect(paddingLeft, y + 4 + barH + 2, sW, barH);
+      ctx.fillRect(padL, baseY + barH + gap, sW, barH);
+
+      if (ease > 0.5) {
+        ctx.fillStyle = '#00aa33';
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('70W', padL + sW + 4, baseY + barH * 2 + gap - 2);
+      }
     });
 
     if (progress < 1) requestAnimationFrame(animate);
@@ -257,66 +266,100 @@ function drawDonutChart(canvas) {
   var W = canvas.width, H = canvas.height;
 
   var fatias = [
-    { label: 'Componentes importados', pct: 60, cor: '#cc4444' },
-    { label: 'Estrutura nacional',     pct: 22, cor: '#00ff41' },
-    { label: 'Software e integração',  pct: 10, cor: '#4488ff' },
-    { label: 'Montagem e testes',       pct:  8, cor: '#ffaa00' }
+    { label: 'Componentes importados', pct: 60, cor: '#cc4444', textCor: '#ff6666' },
+    { label: 'Estrutura nacional',     pct: 22, cor: '#00ff41', textCor: '#00ff41' },
+    { label: 'Software e integração',  pct: 10, cor: '#00884d', textCor: '#00bb66' },
+    { label: 'Montagem e testes',       pct:  8, cor: '#005522', textCor: '#00882a' }
   ];
 
-  var cx = W / 2, cy = 120;
-  var rOut = 90, rIn = 55;
-  var total = 100;
+  var donutCx = W * 0.28;
+  var donutCy = H * 0.46;
+  var rOut = Math.min(W * 0.18, 85);
+  var rIn  = rOut * 0.56;
 
   var startTime = null;
-  var duration = 900;
+  var duration = 1000;
 
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 2);
 
     ctx.clearRect(0, 0, W, H);
 
-    var startAngle = -Math.PI / 2;
+    ctx.beginPath();
+    ctx.arc(donutCx, donutCy, rOut, 0, Math.PI * 2);
+    ctx.arc(donutCx, donutCy, rIn, Math.PI * 2, 0, true);
+    ctx.fillStyle = 'rgba(0,30,0,0.4)';
+    ctx.fill();
+
+    var angle = -Math.PI / 2;
     fatias.forEach(function(f) {
-      var sweep = (f.pct / total) * Math.PI * 2 * progress;
+      var sweep = (f.pct / 100) * Math.PI * 2 * ease;
 
       ctx.beginPath();
-      ctx.moveTo(cx + rIn * Math.cos(startAngle), cy + rIn * Math.sin(startAngle));
-      ctx.arc(cx, cy, rOut, startAngle, startAngle + sweep);
-      ctx.arc(cx, cy, rIn, startAngle + sweep, startAngle, true);
+      ctx.moveTo(donutCx + rIn * Math.cos(angle), donutCy + rIn * Math.sin(angle));
+      ctx.arc(donutCx, donutCy, rOut, angle, angle + sweep);
+      ctx.arc(donutCx, donutCy, rIn, angle + sweep, angle, true);
       ctx.closePath();
       ctx.fillStyle = f.cor;
       ctx.fill();
 
-      // Label % no meio angular
-      var midAngle = startAngle + sweep / 2;
-      var rMid = (rOut + rIn) / 2;
-      var lx = cx + rMid * Math.cos(midAngle);
-      var ly = cy + rMid * Math.sin(midAngle);
-      ctx.fillStyle = '#000a00';
-      ctx.font = 'bold 11px monospace';
+      ctx.strokeStyle = '#000a00';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      if (f.pct >= 10 && ease > 0.6) {
+        var midAngle = angle + sweep / 2;
+        var rMid = (rOut + rIn) / 2;
+        var lx = donutCx + rMid * Math.cos(midAngle);
+        var ly = donutCy + rMid * Math.sin(midAngle);
+        ctx.fillStyle = '#000a00';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(f.pct + '%', lx, ly);
+      }
+
+      angle += sweep;
+    });
+
+    if (ease > 0.7) {
+      ctx.fillStyle = '#001400';
+      ctx.beginPath();
+      ctx.arc(donutCx, donutCy, rIn - 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#00ff41';
+      ctx.font = 'bold 14px monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      if (progress > 0.5) ctx.fillText(f.pct + '%', lx, ly);
+      ctx.fillText('P1', donutCx, donutCy - 8);
+      ctx.fillStyle = '#006622';
+      ctx.font = '10px monospace';
+      ctx.fillText('CUSTO', donutCx, donutCy + 8);
+    }
 
-      startAngle += sweep;
-    });
+    if (ease > 0.3) {
+      var legX = donutCx + rOut + 28;
+      var legStartY = donutCy - rOut * 0.65;
+      var legLineH = 38;
 
-    // Legenda em duas colunas
-    var legY = cy + rOut + 20;
-    var col = 0;
-    fatias.forEach(function(f, i) {
-      var lx = (i % 2 === 0) ? W * 0.1 : W * 0.55;
-      var ly = legY + Math.floor(i / 2) * 20;
-      ctx.fillStyle = f.cor;
-      ctx.fillRect(lx, ly - 5, 10, 10);
-      ctx.fillStyle = '#88bb88';
-      ctx.font = '12px monospace';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(f.label + ' ' + f.pct + '%', lx + 14, ly);
-    });
+      fatias.forEach(function(f, i) {
+        var ly = legStartY + i * legLineH;
+        ctx.fillStyle = f.cor;
+        ctx.fillRect(legX, ly, 12, 12);
+        ctx.fillStyle = '#88bb88';
+        ctx.font = '12px monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(f.label, legX + 18, ly);
+        ctx.fillStyle = f.textCor;
+        ctx.font = 'bold 14px monospace';
+        ctx.fillText(f.pct + '%', legX + 18, ly + 15);
+      });
+    }
 
+    ctx.textBaseline = 'alphabetic';
     if (progress < 1) requestAnimationFrame(animate);
   }
 
@@ -332,19 +375,25 @@ function drawAutonomiaChart(canvas) {
   var W = canvas.width, H = canvas.height;
 
   var dados = [
-    { label: 'Índia HAPS Maraal-3', val: 21,   cor: '#006622', destaque: false },
+    { label: 'Índia HAPS Maraal-3', val: 21,   cor: '#004d22', destaque: false },
     { label: 'VigilIA (proposto)',   val: 10,   cor: '#00ff41', destaque: true  },
-    { label: 'Dubai Drone Box',      val: 0.9,  cor: '#445544', destaque: false },
-    { label: 'Chula Vista DFR',      val: 0.9,  cor: '#445544', destaque: false },
-    { label: 'China Shenzhen',       val: 0.75, cor: '#445544', destaque: false }
+    { label: 'Dubai Drone Box',      val: 0.92, cor: '#224422', destaque: false },
+    { label: 'Chula Vista DFR',      val: 0.92, cor: '#224422', destaque: false },
+    { label: 'China Shenzhen',       val: 0.75, cor: '#1a3322', destaque: false }
   ];
 
-  var padL = 150, padR = 60, padT = 15, padB = 15;
+  var padL = 165, padR = 85, padT = 20, padB = 35;
   var chartW = W - padL - padR;
   var chartH = H - padT - padB;
-  var maxVal = 21;
-  var barH = Math.floor((chartH / dados.length) * 0.55);
-  var rowH = chartH / dados.length;
+  var n = dados.length;
+  var rowH = chartH / n;
+  var barH = Math.floor(rowH * 0.52);
+  var minBarW = chartW * 0.03;
+
+  var logMax = Math.log(21 + 1);
+  function logScale(val) {
+    return Math.log(val + 1) / logMax;
+  }
 
   var startTime = null;
   var duration = 1000;
@@ -352,34 +401,73 @@ function drawAutonomiaChart(canvas) {
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
 
     ctx.clearRect(0, 0, W, H);
 
+    ctx.strokeStyle = 'rgba(0,80,0,0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, H - padB);
+    ctx.stroke();
+
+    var refs = [0.5, 1, 2, 5, 10, 21];
+    refs.forEach(function(r) {
+      var rx = padL + logScale(r) * chartW;
+      ctx.strokeStyle = 'rgba(0,51,0,0.4)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 5]);
+      ctx.beginPath();
+      ctx.moveTo(rx, padT);
+      ctx.lineTo(rx, H - padB);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#334433';
+      ctx.font = '9px monospace';
+      ctx.textAlign = 'center';
+      var refLabel = r < 1 ? (Math.round(r * 60) + 'min') : (r + 'h');
+      ctx.fillText(refLabel, rx, H - padB + 14);
+    });
+
+    ctx.fillStyle = '#223322';
+    ctx.font = '9px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('escala logarítmica', W - 8, H - padB + 14);
+
     dados.forEach(function(d, i) {
       var y = padT + i * rowH + (rowH - barH) / 2;
-      var bW = (d.val / maxVal) * chartW * 0.8 * progress;
+      var bW = Math.max(minBarW, logScale(d.val) * chartW * ease);
 
-      // Label esquerda
-      ctx.fillStyle = d.destaque ? '#00ff41' : '#88bb88';
+      ctx.fillStyle = d.destaque ? '#00ff41' : '#557755';
       ctx.font = (d.destaque ? 'bold ' : '') + '12px monospace';
       ctx.textAlign = 'right';
-      ctx.fillText(d.label, padL - 8, y + barH / 2 + 4);
+      ctx.fillText(d.label, padL - 10, y + barH * 0.68);
 
-      // Barra
+      if (d.destaque) {
+        ctx.shadowColor = '#00ff41';
+        ctx.shadowBlur = 8;
+      }
       ctx.fillStyle = d.cor;
       ctx.fillRect(padL, y, bW, barH);
+      ctx.shadowBlur = 0;
+
       if (d.destaque) {
         ctx.strokeStyle = '#00ff41';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([]);
         ctx.strokeRect(padL, y, bW, barH);
       }
 
-      // Valor ao final da barra
-      if (bW > 20) {
-        ctx.fillStyle = '#00ff41';
-        ctx.font = '11px monospace';
+      if (ease > 0.4) {
+        ctx.fillStyle = d.destaque ? '#00ff41' : '#557755';
+        ctx.font = (d.destaque ? 'bold ' : '') + '11px monospace';
         ctx.textAlign = 'left';
-        ctx.fillText(d.val + 'h', padL + bW + 6, y + barH / 2 + 4);
+        var displayVal = d.val < 1
+          ? Math.round(d.val * 60) + 'min'
+          : d.val + 'h';
+        ctx.fillText(displayVal, padL + bW + 8, y + barH * 0.72);
       }
     });
 
