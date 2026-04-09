@@ -31,7 +31,10 @@ function initMatrixRain() {
   }
 
   resize();
-  setInterval(draw, 50);
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setInterval(draw, 50);
+  }
 
   window.addEventListener('resize', resize);
 }

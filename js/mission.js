@@ -504,10 +504,11 @@ var PHASES = [
 /* ==========================================================
    Rendering and interaction logic
    ========================================================== */
-var currentPhase   = 0;
-var missionAnimId  = null;
+var currentPhase     = 0;
+var missionAnimId    = null;
 var autoAdvanceTimer = null;
-var isPaused       = false;
+var isPaused         = false;
+var missionReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function renderPhase(index) {
   currentPhase = index;
@@ -544,7 +545,7 @@ function renderPhase(index) {
     phase.draw(canvas, progress);
     if (progress < 1) {
       missionAnimId = requestAnimationFrame(loop);
-    } else {
+    } else if (!missionReducedMotion) {
       // Keep alive for phases with continuous animations (rotors, blink, etc.)
       function keepAlive() {
         phase.draw(canvas, 1);
@@ -558,6 +559,7 @@ function renderPhase(index) {
 }
 
 function startAutoAdvance() {
+  if (missionReducedMotion) return; // user prefers reduced motion — manual only
   if (autoAdvanceTimer) clearInterval(autoAdvanceTimer);
   autoAdvanceTimer = setInterval(function () {
     if (isPaused) return;

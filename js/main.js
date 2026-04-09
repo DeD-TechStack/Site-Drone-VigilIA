@@ -2,6 +2,8 @@
 
 window.addEventListener('load', function () {
 
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // -------------------------------------------------------
   // 0. MOBILE NAV TOGGLE — hamburger open/close
   // -------------------------------------------------------
@@ -43,13 +45,17 @@ window.addEventListener('load', function () {
   var heroEl   = document.getElementById('hero-subtitle');
 
   if (heroEl) {
-    function typeChar() {
-      if (charIdx < heroText.length) {
-        heroEl.textContent += heroText[charIdx++];
-        setTimeout(typeChar, 80);
+    if (reducedMotion) {
+      heroEl.textContent = heroText;
+    } else {
+      function typeChar() {
+        if (charIdx < heroText.length) {
+          heroEl.textContent += heroText[charIdx++];
+          setTimeout(typeChar, 80);
+        }
       }
+      typeChar();
     }
-    typeChar();
   }
 
   // -------------------------------------------------------
@@ -66,18 +72,25 @@ window.addEventListener('load', function () {
   // -------------------------------------------------------
   // 3. SECTION FADE-IN — IntersectionObserver
   // -------------------------------------------------------
-  var sectionObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        sectionObserver.unobserve(entry.target);
-      }
+  if (reducedMotion) {
+    // Skip fade animation — show all sections immediately
+    document.querySelectorAll('section').forEach(function (s) {
+      s.classList.add('visible');
     });
-  }, { threshold: 0.1 });
+  } else {
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
 
-  document.querySelectorAll('section').forEach(function (s) {
-    sectionObserver.observe(s);
-  });
+    document.querySelectorAll('section').forEach(function (s) {
+      sectionObserver.observe(s);
+    });
+  }
 
   // -------------------------------------------------------
   // 4. NAVBAR ACTIVE HIGHLIGHT — IntersectionObserver

@@ -628,6 +628,16 @@ function observeChart(canvasId, drawFn) {
       if (entry.isIntersecting) {
         drawFn(el);
         obs.unobserve(el);
+
+        // Redraw on container resize (e.g. orientation change, sidebar toggle)
+        if (window.ResizeObserver && el.parentElement) {
+          var resizeTimer;
+          var ro = new ResizeObserver(function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () { drawFn(el); }, 150);
+          });
+          ro.observe(el.parentElement);
+        }
       }
     });
   }, { threshold: 0.3 });

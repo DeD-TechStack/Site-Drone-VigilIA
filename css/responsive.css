@@ -84,6 +84,9 @@
   /* ---- Tech grid: single column ---- */
   .tech-grid   { grid-template-columns: 1fr; }
 
+  /* ---- Roadmap: allow horizontal scroll on narrow viewports ---- */
+  .roadmap-track { overflow-x: auto; padding-bottom: 0.5rem; }
+
   /* ---- Stats: 2-up ---- */
   .stats-grid  { grid-template-columns: repeat(2, 1fr); }
 

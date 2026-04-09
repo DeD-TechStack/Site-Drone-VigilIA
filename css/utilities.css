@@ -28,3 +28,19 @@
 @keyframes blink {
   50% { opacity: 0; }
 }
+
+/* ============================================
+   REDUCED MOTION — respect user preference
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  /* Stop all looping animations */
+  .blink-text      { animation: none; }
+  .crosshair-ring  { animation: none; }
+  .hud-scanline    { animation: none; }
+
+  /* Collapse transitions to instant */
+  section          { transition: none; }
+  .tl-body         { transition: none; }
+  .nav-toggle span { transition: none; }
+  .drone-img       { transition: none; }
+}
