@@ -1,5 +1,7 @@
 // charts.js — All canvas charts for VigilIA
 
+var chartsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /* ==========================================================
    Energy balance chart (bar chart by flight mode)
    ========================================================== */
@@ -55,6 +57,7 @@ function drawEnergiaChart(canvas) {
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    if (chartsReducedMotion) progress = 1;
     var ease     = 1 - Math.pow(1 - progress, 3);
 
     ctx.clearRect(0, 0, W, H);
@@ -156,6 +159,7 @@ function drawEscalaChart(canvas) {
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    if (chartsReducedMotion) progress = 1;
 
     ctx.clearRect(0, 0, W, H);
     drawYGrid();
@@ -285,6 +289,7 @@ function drawDonutChart(canvas) {
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    if (chartsReducedMotion) progress = 1;
     var ease     = 1 - Math.pow(1 - progress, 2);
 
     ctx.clearRect(0, 0, W, H);
@@ -406,6 +411,7 @@ function drawAutonomiaChart(canvas) {
   function animate(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
+    if (chartsReducedMotion) progress = 1;
     var ease     = 1 - Math.pow(1 - progress, 3);
 
     ctx.clearRect(0, 0, W, H);
@@ -537,6 +543,7 @@ function drawGanttChart(canvas) {
   function animate(ts) {
     if (!startTime) startTime = ts;
     var elapsed = ts - startTime;
+    if (chartsReducedMotion) elapsed = (fases.length - 1) * stagger + duration + 1;
 
     ctx.clearRect(0, 0, W, H);
     drawGrid();

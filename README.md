@@ -39,7 +39,7 @@ js/
   mission.js          — simulador de missão interativo
 
 assets/
-  drone.png           — imagem do drone no hero
+  drone.svg           — diagrama técnico SVG do drone (wireframe top-view)
 ```
 
 ## Ponto de entrada
