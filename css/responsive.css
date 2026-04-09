@@ -110,6 +110,32 @@
 
   /* ---- HUD corners hidden on very small scene ---- */
   .hero-drone-scene::before { display: none; }
+
+  /* ---- Specs table: single column ---- */
+  .specs-two-col { grid-template-columns: 1fr; }
+
+  /* ---- Timeline node name ---- */
+  .tl-name { font-size: 0.85rem; }
+
+  /* ---- Component tabs: horizontal scroll instead of wrap ---- */
+  .comp-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .comp-tab  { white-space: nowrap; flex-shrink: 0; }
+
+  /* ---- Chart canvases: never overflow their wrapper ---- */
+  .chart-wrap        { overflow: hidden; }
+  .chart-wrap canvas { width: 100% !important; }
+
+  /* ---- Roadmap nodes: tighter on phones ---- */
+  .roadmap-node { padding: 0.5rem 0.4rem; min-width: 52px; }
+  .rm-icon      { font-size: 1.2rem; }
+}
+
+/* ============================================================
+   NARROW  ≤ 480px
+   ============================================================ */
+@media (max-width: 480px) {
+  /* ---- Impact grid: single column ---- */
+  .impact-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================

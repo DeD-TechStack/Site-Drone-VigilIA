@@ -24,23 +24,35 @@ Acesse `http://localhost:5500/vigilia.html`
 vigilia.html          — página principal (single-page)
 
 css/
-  base.css            — reset, variáveis CSS, tipografia base
+  base.css            — reset, ~20 design tokens (:root), tipografia base
   layout.css          — containers, grids, padding de seções, fade-in
   components.css      — navbar, botões, cards, tabelas, charts, timeline
-  sections.css        — visual do hero (drone, HUD overlay)
-  utilities.css       — animações keyframe, classes de estado
-  responsive.css      — media queries (carrega por último)
+  sections.css        — visual do hero (drone, HUD overlay com pseudo-elementos)
+  utilities.css       — animações keyframe, .sr-only, classes de estado
+  responsive.css      — media queries (carrega por último, ≤900/600/480/380px)
 
 js/
-  main.js             — typewriter, scroll, navbar, telemetria, contadores
+  main.js             — typewriter, scroll, navbar scrolled-state, telemetria, contadores animados
   matrix.js           — efeito matrix canvas de fundo
-  timeline.js         — timeline expansível + abas de componentes
-  charts.js           — todos os gráficos canvas (energético, gantt, donut, etc.)
-  mission.js          — simulador de missão interativo
+  timeline.js         — timeline expansível + abas de componentes + nós do roadmap clicáveis
+  charts.js           — 5 gráficos canvas com DPR/Retina, ResizeObserver, reduced-motion
+  mission.js          — simulador de missão interativo com DPR/Retina e ResizeObserver
 
 assets/
   drone.svg           — diagrama técnico SVG do drone (wireframe top-view)
 ```
+
+## Canvas e DPR (Retina / alta densidade)
+
+Todos os `<canvas>` são dimensionados para o Device Pixel Ratio do display:
+
+- **`charts.js`** — `setupHiDPICanvas(canvas)` lê `offsetWidth`, lê o atributo `height`,
+  define `canvas.width/height` em pixels físicos e aplica `ctx.setTransform(dpr,0,0,dpr,0,0)`.
+  Todas as coordenadas de desenho permanecem em pixels CSS.
+- **`mission.js`** — `renderPhase()` lê `offsetWidth`/`offsetHeight` antes de cada animação
+  e atualiza `canvas.width/height`. Cada função de desenho aplica `ctx.setTransform(dpr,…)`.
+- **ResizeObserver** — ambos registram um observer com debounce de 150ms no elemento pai
+  para redesenhar ao redimensionar a janela ou girar o dispositivo.
 
 ## Ponto de entrada
 

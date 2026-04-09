@@ -6,8 +6,10 @@
    ========================================================== */
 
 function drawVTOL(canvas, progress) {
+  var dpr = window.devicePixelRatio || 1;
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var W = canvas.width / dpr, H = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
@@ -80,8 +82,10 @@ function drawVTOL(canvas, progress) {
 }
 
 function drawTransicao(canvas, progress) {
+  var dpr = window.devicePixelRatio || 1;
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var W = canvas.width / dpr, H = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
@@ -139,8 +143,10 @@ function drawTransicao(canvas, progress) {
 }
 
 function drawCruzeiro(canvas, progress) {
+  var dpr = window.devicePixelRatio || 1;
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var W = canvas.width / dpr, H = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
@@ -216,8 +222,10 @@ function drawCruzeiro(canvas, progress) {
 }
 
 function drawPatrulha(canvas, progress) {
+  var dpr = window.devicePixelRatio || 1;
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var W = canvas.width / dpr, H = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
@@ -291,8 +299,10 @@ function drawPatrulha(canvas, progress) {
 }
 
 function drawAlerta(canvas, progress) {
+  var dpr = window.devicePixelRatio || 1;
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var W = canvas.width / dpr, H = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
@@ -348,8 +358,10 @@ function drawAlerta(canvas, progress) {
 }
 
 function drawPouso(canvas, progress) {
+  var dpr = window.devicePixelRatio || 1;
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  var W = canvas.width / dpr, H = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
@@ -534,6 +546,16 @@ function renderPhase(index) {
     descEl.textContent = phase.desc;
   }
 
+  // Size canvas buffer to match current CSS layout × DPR (fixes blur on Retina
+  // and on containers wider than the HTML width="420" attribute)
+  var dpr  = window.devicePixelRatio || 1;
+  var cssW = canvas.offsetWidth;
+  var cssH = canvas.offsetHeight;
+  if (cssW && cssH) {
+    canvas.width  = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+  }
+
   // Run canvas animation
   if (missionAnimId) cancelAnimationFrame(missionAnimId);
   var startTime = null;
@@ -612,5 +634,18 @@ window.addEventListener('load', function () {
       });
     }, { threshold: 0.2 });
     obs.observe(secaoOp);
+  }
+
+  // Redraw mission canvas on container resize (orientation change, sidebar, etc.)
+  var missionCanvas = document.getElementById('mission-canvas');
+  if (window.ResizeObserver && missionCanvas && missionCanvas.parentElement) {
+    var missionResizeTimer;
+    var missionRO = new ResizeObserver(function () {
+      clearTimeout(missionResizeTimer);
+      missionResizeTimer = setTimeout(function () {
+        renderPhase(currentPhase);
+      }, 150);
+    });
+    missionRO.observe(missionCanvas.parentElement);
   }
 });

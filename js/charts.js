@@ -2,15 +2,35 @@
 
 var chartsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ----------------------------------------------------------
+   setupHiDPICanvas — calibrate canvas buffer for the current
+   CSS layout size and device pixel ratio.
+   Returns { ctx, W, H } in CSS pixel coordinates, or null
+   when the canvas has zero width (not yet visible).
+   ---------------------------------------------------------- */
+function setupHiDPICanvas(canvas) {
+  var dpr  = window.devicePixelRatio || 1;
+  var cssW = canvas.offsetWidth;
+  var cssH = parseInt(canvas.getAttribute('height'), 10)
+             || canvas.offsetHeight
+             || 200;
+  if (!cssW || !cssH) return null;
+  canvas.width  = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssH * dpr);
+  var ctx = canvas.getContext('2d');
+  // setTransform resets any prior transform then applies DPR scale — safe to
+  // call on every redraw without accumulation.
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx: ctx, W: cssW, H: cssH };
+}
+
 /* ==========================================================
    Energy balance chart (bar chart by flight mode)
    ========================================================== */
 function drawEnergiaChart(canvas) {
-  canvas.width = canvas.offsetWidth;
-  if (!canvas.width) return; // not visible yet
-
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  var setup = setupHiDPICanvas(canvas);
+  if (!setup) return;
+  var ctx = setup.ctx, W = setup.W, H = setup.H;
 
   var modos = [
     { label: 'Decolagem VTOL',   consumo: 300, solar: 70, cor: '#cc4444' },
@@ -21,7 +41,7 @@ function drawEnergiaChart(canvas) {
     { label: 'Pouso VTOL',       consumo: 260, solar: 70, cor: '#cc4444' }
   ];
 
-  var padL = 150, padR = 70, padT = 20, padB = 45;
+  var padL = W < 420 ? 108 : 150, padR = 70, padT = 20, padB = 45;
   var chartW = W - padL - padR;
   var chartH = H - padT - padB;
   var maxVal = 320;
@@ -114,11 +134,9 @@ function drawEnergiaChart(canvas) {
    Unit cost vs. production scale (area chart)
    ========================================================== */
 function drawEscalaChart(canvas) {
-  canvas.width = canvas.offsetWidth;
-  if (!canvas.width) return;
-
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  var setup = setupHiDPICanvas(canvas);
+  if (!setup) return;
+  var ctx = setup.ctx, W = setup.W, H = setup.H;
 
   var dados = [
     { label: 'Protótipo (1)', min: 55000, max: 96000 },
@@ -265,11 +283,9 @@ function drawEscalaChart(canvas) {
    Prototype cost donut chart
    ========================================================== */
 function drawDonutChart(canvas) {
-  canvas.width = canvas.offsetWidth;
-  if (!canvas.width) return;
-
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  var setup = setupHiDPICanvas(canvas);
+  if (!setup) return;
+  var ctx = setup.ctx, W = setup.W, H = setup.H;
 
   var fatias = [
     { label: 'Componentes importados', pct: 60, cor: '#cc4444', textCor: '#ff6666' },
@@ -278,9 +294,10 @@ function drawDonutChart(canvas) {
     { label: 'Montagem e testes',      pct:  8, cor: '#005522', textCor: '#00882a' }
   ];
 
-  var donutCx = W * 0.28;
-  var donutCy = H * 0.46;
-  var rOut    = Math.min(W * 0.18, 85);
+  var narrow  = W < 320;
+  var donutCx = narrow ? W * 0.50 : W * 0.28;
+  var donutCy = narrow ? H * 0.38 : H * 0.46;
+  var rOut    = Math.min(W * (narrow ? 0.30 : 0.18), 85);
   var rIn     = rOut * 0.56;
 
   var startTime = null;
@@ -348,11 +365,11 @@ function drawDonutChart(canvas) {
       ctx.fillText('CUSTO', donutCx, donutCy + 8);
     }
 
-    // Legend
+    // Legend — below donut on narrow screens, beside it otherwise
     if (ease > 0.3) {
-      var legX      = donutCx + rOut + 28;
-      var legStartY = donutCy - rOut * 0.65;
-      var legLineH  = 38;
+      var legX      = narrow ? 8              : donutCx + rOut + 28;
+      var legStartY = narrow ? donutCy + rOut + 14 : donutCy - rOut * 0.65;
+      var legLineH  = narrow ? 22             : 38;
 
       fatias.forEach(function (f, i) {
         var ly = legStartY + i * legLineH;
@@ -380,11 +397,9 @@ function drawDonutChart(canvas) {
    Comparative endurance bar chart (log scale)
    ========================================================== */
 function drawAutonomiaChart(canvas) {
-  canvas.width = canvas.offsetWidth;
-  if (!canvas.width) return;
-
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  var setup = setupHiDPICanvas(canvas);
+  if (!setup) return;
+  var ctx = setup.ctx, W = setup.W, H = setup.H;
 
   var dados = [
     { label: 'Índia HAPS Maraal-3', val: 21,   cor: '#004d22', destaque: false },
@@ -394,7 +409,7 @@ function drawAutonomiaChart(canvas) {
     { label: 'China Shenzhen',       val: 0.75, cor: '#1a3322', destaque: false }
   ];
 
-  var padL   = 165, padR = 85, padT = 20, padB = 35;
+  var padL   = W < 420 ? 118 : 165, padR = W < 420 ? 55 : 85, padT = 20, padB = 35;
   var chartW = W - padL - padR;
   var chartH = H - padT - padB;
   var n      = dados.length;
@@ -489,11 +504,9 @@ function drawAutonomiaChart(canvas) {
    Gantt-style project schedule chart
    ========================================================== */
 function drawGanttChart(canvas) {
-  canvas.width = canvas.offsetWidth;
-  if (!canvas.width) return;
-
-  var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;
+  var setup = setupHiDPICanvas(canvas);
+  if (!setup) return;
+  var ctx = setup.ctx, W = setup.W, H = setup.H;
 
   var fases = [
     { label: 'F1 Conceituação',      inicio: 0,  dur: 3,  status: 'done'    },
@@ -506,7 +519,7 @@ function drawGanttChart(canvas) {
   ];
 
   var totalMonths = 33;
-  var padL   = 140, padR = 20, padT = 20, padB = 30;
+  var padL   = W < 420 ? 90 : 140, padR = 20, padT = 20, padB = 30;
   var chartW = W - padL - padR;
   var chartH = H - padT - padB;
   var rowH   = chartH / fases.length;
