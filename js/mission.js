@@ -522,11 +522,32 @@ var autoAdvanceTimer = null;
 var isPaused         = false;
 var missionReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+function toggleMissionPause() {
+  isPaused = !isPaused;
+  var btn = document.getElementById('mission-pause-btn');
+  if (!btn) return;
+  if (isPaused) {
+    btn.textContent = '▶ RETOMAR';
+    btn.setAttribute('aria-label', 'Retomar avanço automático da simulação');
+    btn.classList.add('active');
+  } else {
+    btn.textContent = '⏸ PAUSAR';
+    btn.setAttribute('aria-label', 'Pausar avanço automático da simulação');
+    btn.classList.remove('active');
+  }
+}
+
 function renderPhase(index) {
   currentPhase = index;
   var phase  = PHASES[index];
   var canvas = document.getElementById('mission-canvas');
   if (!canvas) return;
+
+  // Update phase header
+  var phdrNum  = document.getElementById('mission-phase-num');
+  var phdrName = document.getElementById('mission-phase-name');
+  if (phdrNum)  phdrNum.textContent  = String(index + 1).padStart(2, '0') + '/' + String(PHASES.length).padStart(2, '0');
+  if (phdrName) phdrName.textContent = phase.name;
 
   // Update stats panel
   var statsEl = document.getElementById('mission-stats');
@@ -614,11 +635,24 @@ window.addEventListener('load', function () {
     });
   });
 
+  // Pause button — toggle auto-advance
+  var pauseBtn = document.getElementById('mission-pause-btn');
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', toggleMissionPause);
+  }
+
   // Pause auto-advance while hovering the simulator
+  // (does not change the button state — hover-pause is temporary)
   var layout = document.querySelector('.mission-layout');
   if (layout) {
     layout.addEventListener('mouseenter', function () { isPaused = true; });
-    layout.addEventListener('mouseleave', function () { isPaused = false; });
+    layout.addEventListener('mouseleave', function () {
+      // Only un-pause on mouse-leave if the pause button hasn't been explicitly toggled
+      var btn = document.getElementById('mission-pause-btn');
+      if (!btn || !btn.classList.contains('active')) {
+        isPaused = false;
+      }
+    });
   }
 
   // Start when section enters viewport

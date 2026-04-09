@@ -27,17 +27,53 @@ function initTimeline() {
 function initComponentTabs() {
   var tabs   = document.querySelectorAll('.comp-tab');
   var panels = document.querySelectorAll('.comp-panel');
+  var arr    = Array.prototype.slice.call(tabs);
+
+  function activateTab(tab) {
+    // Deactivate all tabs
+    tabs.forEach(function (t) {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+      t.tabIndex = -1;
+    });
+    // Hide all panels
+    panels.forEach(function (p) { p.classList.remove('active'); });
+
+    // Activate the selected tab
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    tab.tabIndex = 0;
+
+    // Show the matching panel
+    var panel = document.getElementById('panel-' + tab.dataset.panel);
+    if (panel) panel.classList.add('active');
+  }
 
   tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      // Deactivate all tabs and panels
-      tabs.forEach(function (t)   { t.classList.remove('active'); });
-      panels.forEach(function (p) { p.classList.remove('active'); });
+    tab.addEventListener('click', function () { activateTab(tab); });
 
-      // Activate selected tab and its panel
-      tab.classList.add('active');
-      var panel = document.getElementById('panel-' + tab.dataset.panel);
-      if (panel) panel.classList.add('active');
+    // Arrow-key / Home / End navigation within the tablist (ARIA pattern)
+    tab.addEventListener('keydown', function (e) {
+      var idx = arr.indexOf(tab);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        var next = arr[(idx + 1) % arr.length];
+        activateTab(next);
+        next.focus();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        var prev = arr[(idx - 1 + arr.length) % arr.length];
+        activateTab(prev);
+        prev.focus();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        activateTab(arr[0]);
+        arr[0].focus();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        activateTab(arr[arr.length - 1]);
+        arr[arr.length - 1].focus();
+      }
     });
   });
 }
@@ -45,6 +81,15 @@ function initComponentTabs() {
 // Roadmap nodes — clicking navigates to and expands the matching timeline entry
 function initRoadmapNodes() {
   var nodes = document.querySelectorAll('.roadmap-node[data-phase]');
+
+  function flashTlNode(tlNode) {
+    // Remove the class first so re-triggering restarts the animation
+    tlNode.classList.remove('flash');
+    // Force reflow so the browser re-applies the animation
+    void tlNode.offsetWidth;
+    tlNode.classList.add('flash');
+    setTimeout(function () { tlNode.classList.remove('flash'); }, 1300);
+  }
 
   nodes.forEach(function (node) {
     function activate() {
@@ -60,9 +105,10 @@ function initRoadmapNodes() {
       // Expand the target timeline node
       tlNode.classList.add('expanded');
 
-      // Smooth scroll to it (give browser a tick to paint the expansion first)
+      // Scroll into view then flash-highlight on arrival
       setTimeout(function () {
         tlNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        flashTlNode(tlNode);
       }, 50);
     }
 
@@ -76,6 +122,13 @@ function initRoadmapNodes() {
       }
     });
   });
+
+  // Mark the current in-progress phase (F3) as active on load
+  var currentNode = document.querySelector('.roadmap-node.current[data-phase]');
+  if (currentNode) {
+    nodes.forEach(function (n) { n.classList.remove('active'); });
+    currentNode.classList.add('active');
+  }
 }
 
 window.addEventListener('load', function () {

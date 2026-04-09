@@ -55,7 +55,10 @@
   .hero-visual { width: 100%; }
 
   /* ---- Mission: single column, phases wrap ---- */
-  .mission-layout { grid-template-columns: 1fr; }
+  .mission-layout  { grid-template-columns: 1fr; }
+  .mphdr-status    { display: none; }
+  /* ctrl row takes full width in the flex-wrap phase strip */
+  .mission-ctrl    { flex: 0 0 100%; justify-content: center; }
   .mission-phases { flex-direction: row; flex-wrap: wrap; }
   .phase-item     { flex: 1 1 calc(33% - 4px); }
 
@@ -110,6 +113,18 @@
 
   /* ---- HUD corners hidden on very small scene ---- */
   .hero-drone-scene::before { display: none; }
+
+  /* ---- Section badges: tighter ---- */
+  .section-badge-row { margin-bottom: 1.5rem; }
+
+  /* ---- Mission phase header: hide status chip ---- */
+  .mphdr-status { display: none; }
+
+  /* ---- Mission controls: center-align ---- */
+  .mission-ctrl { justify-content: center; }
+
+  /* ---- Chart KPI: smaller gap ---- */
+  .chart-kpi { gap: 0.7rem; font-size: 0.6rem; }
 
   /* ---- Specs table: single column ---- */
   .specs-two-col { grid-template-columns: 1fr; }

@@ -40,14 +40,25 @@
   50% { opacity: 0; }
 }
 
+/* Timeline node flash — triggered when scrolled to via roadmap */
+@keyframes tl-flash {
+  0%   { background: rgba(0,255,65,0.12); }
+  60%  { background: rgba(0,255,65,0.05); }
+  100% { background: rgba(0,20,0,0.45); }
+}
+.tl-node.flash > .tl-header {
+  animation: tl-flash 1.2s ease-out forwards;
+}
+
 /* ============================================
    REDUCED MOTION — respect user preference
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   /* Stop all looping animations */
-  .blink-text     { animation: none; }
-  .crosshair-ring { animation: none; }
-  .hud-scanline   { animation: none; }
+  .blink-text          { animation: none; }
+  .crosshair-ring      { animation: none; }
+  .hud-scanline        { animation: none; }
+  .tl-node.flash > .tl-header { animation: none; }
 
   /* Collapse transitions to instant */
   section,

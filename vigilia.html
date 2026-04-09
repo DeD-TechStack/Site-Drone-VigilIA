@@ -85,6 +85,11 @@
   <section id="secao-op">
     <div class="section-container">
       <h2 class="section-title">// SIMULAÇÃO DE MISSÃO — COMO O VIGILIA OPERA</h2>
+      <div class="section-badge-row">
+        <span class="section-badge badge-active">◉ DEMO INTERATIVA</span>
+        <span class="section-badge">6 FASES</span>
+        <span class="section-badge">AVANÇO AUTOMÁTICO</span>
+      </div>
       <div class="mission-layout">
 
         <!-- Painel esquerdo: seletor de fases -->
@@ -119,10 +124,18 @@
             <span class="phase-name">RETORNO E POUSO</span>
             <span class="phase-time">Final missão</span>
           </div>
+          <div class="mission-ctrl">
+            <button class="mission-btn" id="mission-pause-btn" aria-label="Pausar avanço automático da simulação">⏸ PAUSAR</button>
+          </div>
         </div>
 
         <!-- Painel direito: detalhe da fase selecionada -->
         <div class="mission-detail">
+          <div class="mission-phase-hdr" aria-live="polite">
+            <span class="mphdr-num"    id="mission-phase-num">01/06</span>
+            <span class="mphdr-name"   id="mission-phase-name">DECOLAGEM VTOL</span>
+            <span class="mphdr-status" aria-hidden="true">◉ SIMULANDO</span>
+          </div>
           <div class="mission-screen">
             <canvas id="mission-canvas" width="420" height="260" aria-hidden="true"></canvas>
           </div>
@@ -211,6 +224,13 @@
 
       <div class="chart-wrap" id="chart-energia">
         <div class="chart-title">// BALANÇO ENERGÉTICO POR MODO DE VOO (W)</div>
+        <div class="chart-kpi">
+          <span class="kpi-item"><span class="kpi-dot" style="background:#00ff41"></span>PATRULHA SOLAR: <strong>±0W</strong></span>
+          <span class="kpi-sep">·</span>
+          <span class="kpi-item"><span class="kpi-dot" style="background:#ffaa00"></span>CRUZEIRO: <strong>−25W</strong></span>
+          <span class="kpi-sep">·</span>
+          <span class="kpi-item"><span class="kpi-dot" style="background:#cc4444"></span>VTOL PICO: <strong>−230W</strong></span>
+        </div>
         <canvas id="canvas-energia" height="260"></canvas>
         <div class="chart-legend">
           <span><span class="legend-dot" style="background:#00ff41"></span>Geração Solar</span>
@@ -224,13 +244,13 @@
   <section id="secao-3">
     <div class="section-container">
       <h2 class="section-title">// COMPONENTES</h2>
-      <div class="comp-tabs">
-        <button class="comp-tab active" data-panel="importados">IMPORTADOS (10)</button>
-        <button class="comp-tab" data-panel="nacionais">FABRICAÇÃO NACIONAL (10)</button>
-        <button class="comp-tab" data-panel="desenvolver">A DESENVOLVER (6)</button>
+      <div class="comp-tabs" role="tablist" aria-label="Categorias de componentes">
+        <button class="comp-tab active" id="tab-importados" role="tab" aria-selected="true"  aria-controls="panel-importados" data-panel="importados">IMPORTADOS (10)</button>
+        <button class="comp-tab"        id="tab-nacionais"  role="tab" aria-selected="false" aria-controls="panel-nacionais"  data-panel="nacionais"  tabindex="-1">FABRICAÇÃO NACIONAL (10)</button>
+        <button class="comp-tab"        id="tab-desenvolver" role="tab" aria-selected="false" aria-controls="panel-desenvolver" data-panel="desenvolver" tabindex="-1">A DESENVOLVER (6)</button>
       </div>
 
-      <div id="panel-importados" class="comp-panel active">
+      <div id="panel-importados" class="comp-panel active" role="tabpanel" aria-labelledby="tab-importados">
         <div class="comp-grid">
           <div class="comp-card import">
             <div class="comp-tag">IMPORTADO</div>
@@ -289,7 +309,7 @@
         </div>
       </div>
 
-      <div id="panel-nacionais" class="comp-panel">
+      <div id="panel-nacionais" class="comp-panel" role="tabpanel" aria-labelledby="tab-nacionais">
         <div class="comp-grid">
           <div class="comp-card nacional">
             <div class="comp-tag">FABRICAÇÃO NACIONAL</div>
@@ -344,7 +364,7 @@
         </div>
       </div>
 
-      <div id="panel-desenvolver" class="comp-panel">
+      <div id="panel-desenvolver" class="comp-panel" role="tabpanel" aria-labelledby="tab-desenvolver">
         <div class="comp-grid">
           <div class="comp-card desenvolver">
             <div class="comp-tag">A DESENVOLVER</div>
@@ -689,6 +709,10 @@
   <section id="secao-6">
     <div class="section-container">
       <h2 class="section-title">// ROADMAP TECNOLÓGICO</h2>
+      <div class="section-badge-row">
+        <span class="section-badge badge-active">▶ F3 EM ANDAMENTO</span>
+        <span class="section-badge">F1–F2 CONCLUÍDOS</span>
+      </div>
       <div class="roadmap-track">
         <div class="roadmap-line"></div>
         <div class="roadmap-node done" role="button" tabindex="0" data-phase="F1" aria-label="Fase F1 — Conceituação (Jan–Mar 2024, concluído) — ver detalhes no cronograma">
@@ -699,9 +723,9 @@
           <div class="rm-circle">F2</div>
           <div class="rm-label">DESIGN<br><small>Abr–Set 2024</small></div>
         </div>
-        <div class="roadmap-node pending" role="button" tabindex="0" data-phase="F3" aria-label="Fase F3 — Fabricação (Out 2024–Mar 2025, planejado) — ver detalhes no cronograma">
+        <div class="roadmap-node pending current" role="button" tabindex="0" data-phase="F3" aria-label="Fase F3 — Fabricação (Out 2024–Mar 2025, em andamento) — ver detalhes no cronograma" aria-current="step">
           <div class="rm-circle">F3</div>
-          <div class="rm-label">FABRICAÇÃO<br><small>Out 24–Mar 25</small></div>
+          <div class="rm-label">FABRICAÇÃO<br><small>Out 24–Mar 25</small><br><span class="rm-current">▶ ATUAL</span></div>
         </div>
         <div class="roadmap-node pending" role="button" tabindex="0" data-phase="F4" aria-label="Fase F4 — Testes de Voo (Abr–Jun 2025, planejado) — ver detalhes no cronograma">
           <div class="rm-circle">F4</div>
@@ -770,6 +794,13 @@
       <h2 class="section-title">// COMPARATIVO DE MERCADO</h2>
       <div class="chart-wrap" id="chart-autonomia">
         <div class="chart-title">// AUTONOMIA COMPARATIVA (HORAS)</div>
+        <div class="chart-kpi">
+          <span class="kpi-item">VigilIA: <strong style="color:#00ff41">10h</strong></span>
+          <span class="kpi-sep">·</span>
+          <span class="kpi-item">Média concorrentes: <strong>&lt;1h</strong></span>
+          <span class="kpi-sep">·</span>
+          <span class="kpi-item">Vantagem: <strong style="color:#00ff41">+10×</strong></span>
+        </div>
         <canvas id="canvas-autonomia" height="200"></canvas>
       </div>
 
