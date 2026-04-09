@@ -16,7 +16,10 @@
 
   <nav id="navbar" aria-label="Navegação principal">
     <div class="nav-logo">VigilIA</div>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="nav-links-list">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links-list">
       <li><a href="#secao-1" data-section="secao-1">INÍCIO</a></li>
       <li><a href="#secao-op" data-section="secao-op">OPERAÇÃO</a></li>
       <li><a href="#secao-2" data-section="secao-2">ESTRUTURA</a></li>
@@ -46,7 +49,7 @@
       <div class="hero-visual">
         <div class="hero-drone-scene">
           <!-- Imagem do drone -->
-          <img src="assets/drone.png" alt="VigilIA — drone nacional de asa fixa solar com suporte VTOL" class="drone-img" id="hero-drone-img"/>
+          <img src="assets/drone.svg" alt="VigilIA — diagrama técnico do drone de asa fixa solar com suporte VTOL" class="drone-img" id="hero-drone-img" onerror="this.style.display='none'"/>
           <!-- HUD overlay — decorative telemetry display, hidden from assistive tech -->
           <div class="hud-overlay" aria-hidden="true">
             <div class="hud-corner hud-tl">

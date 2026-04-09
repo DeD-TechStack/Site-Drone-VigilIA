@@ -38,6 +38,30 @@
 .nav-links a:hover,
 .nav-links a.active { color: var(--green); }
 
+/* Hamburger toggle button — hidden on desktop, shown on mobile */
+.nav-toggle {
+  display:     none;
+  flex-direction: column;
+  justify-content: center;
+  gap:         5px;
+  background:  none;
+  border:      none;
+  cursor:      pointer;
+  padding:     4px;
+  z-index:     101;
+}
+.nav-toggle span {
+  display:    block;
+  width:      22px;
+  height:     2px;
+  background: var(--green);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+/* Animate to X when open */
+#navbar.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#navbar.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+#navbar.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ============================================
    BACK-TO-TOP BUTTON
    ============================================ */

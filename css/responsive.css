@@ -2,29 +2,109 @@
    responsive.css — Media queries (must load last)
    ============================================== */
 
+/* ============================================================
+   TABLET / SMALL DESKTOP  ≤ 900px
+   ============================================================ */
 @media (max-width: 900px) {
-  /* Hero: stack vertically */
-  .hero-wrapper   { flex-direction: column; }
-  .hero-visual    { width: 100%; }
 
-  /* Mission: single column, phases wrap */
+  /* ---- Navbar: show hamburger, hide inline links ---- */
+  .nav-toggle { display: flex; }
+
+  #navbar {
+    flex-wrap: wrap;
+    padding:   0.8rem 1.2rem;
+  }
+
+  /* Nav links collapse to a hidden dropdown until .nav-open */
+  .nav-links {
+    display:        none;        /* hidden by default on mobile */
+    flex-direction: column;
+    gap:            0;
+    width:          100%;
+    order:          3;           /* below logo + toggle row */
+    border-top:     1px solid var(--green-dim);
+    padding:        0.5rem 0 0.8rem;
+    background:     rgba(0,10,0,0.97);
+  }
+
+  .nav-links li a {
+    display:        block;
+    padding:        0.55rem 0.5rem;
+    font-size:      0.85rem;
+    letter-spacing: 0.12em;
+    border-bottom:  1px solid rgba(0,51,0,0.3);
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+
+  /* Open state: show the menu */
+  #navbar.nav-open .nav-links { display: flex; }
+
+  /* ---- Hero: stack vertically ---- */
+  .hero-wrapper {
+    flex-direction: column;
+    gap:            2rem;
+  }
+  .hero-visual { width: 100%; }
+
+  /* Tighten telemetry row on mid screens */
+  .hero-tel { gap: 1.2rem; flex-wrap: wrap; }
+
+  /* ---- Mission: single column, phases wrap ---- */
   .mission-layout { grid-template-columns: 1fr; }
   .mission-phases { flex-direction: row; flex-wrap: wrap; }
   .phase-item     { flex: 1 1 calc(33% - 4px); }
 
-  /* Tech grid: 2 columns */
+  /* ---- Tech grid: 2 columns ---- */
   .tech-grid { grid-template-columns: 1fr 1fr; }
 
-  /* Reduce section padding */
+  /* ---- Reduce section padding ---- */
   #secao-1, #secao-op,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 4rem 1.5rem; }
 }
 
+/* ============================================================
+   MOBILE  ≤ 600px
+   ============================================================ */
 @media (max-width: 600px) {
+
+  /* ---- Hero ---- */
+  .hero-title    { font-size: 3.2rem; }
+  .hero-tag      { font-size: 0.62rem; }
+  .hero-tel      { gap: 0.8rem; font-size: 0.7rem; }
+  .hero-cta      { width: 100%; text-align: center; }
+
+  /* ---- Drone scene min-height on small screens ---- */
+  .hero-drone-scene { min-height: 200px; }
+
+  /* ---- Phase items: 2-up ---- */
   .phase-item  { flex: 1 1 calc(50% - 4px); }
+
+  /* ---- Tech grid: single column ---- */
   .tech-grid   { grid-template-columns: 1fr; }
-  .hero-title  { font-size: 3.5rem; }
+
+  /* ---- Stats: 2-up ---- */
   .stats-grid  { grid-template-columns: repeat(2, 1fr); }
+
+  /* ---- Section padding ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 3.5rem 1rem; }
+
+  /* ---- Roadmap: hide labels, show only circles ---- */
+  .rm-label   { font-size: 0.62rem; }
+
+  /* ---- Comparative table: allow horizontal scroll ---- */
+  .comp-table-wrapper { -webkit-overflow-scrolling: touch; }
+}
+
+/* ============================================================
+   VERY SMALL  ≤ 380px
+   ============================================================ */
+@media (max-width: 380px) {
+  .hero-title { font-size: 2.8rem; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .phase-item { flex: 1 1 100%; }
 }

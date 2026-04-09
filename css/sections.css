@@ -12,9 +12,11 @@
   position:    relative;
 }
 .hero-drone-scene {
-  position: relative;
-  border:   1px solid var(--green-dim);
-  overflow: hidden;
+  position:   relative;
+  border:     1px solid var(--green-dim);
+  overflow:   hidden;
+  min-height: 260px; /* prevents scene collapsing if image fails to load */
+  background: #000a00;
 }
 .drone-img {
   width:      100%;
@@ -22,8 +24,15 @@
   filter:     saturate(0.4) brightness(0.75) sepia(0.3) hue-rotate(80deg);
   transition: filter 0.4s;
 }
+/* SVG diagrams are already styled — don't apply the photo filter */
+.drone-img[src$=".svg"] {
+  filter: none;
+}
 .hero-drone-scene:hover .drone-img {
   filter: saturate(0.6) brightness(0.85) sepia(0.2) hue-rotate(80deg);
+}
+.hero-drone-scene:hover .drone-img[src$=".svg"] {
+  filter: brightness(1.1);
 }
 
 /* Vignette gradient over the drone image */

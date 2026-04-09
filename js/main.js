@@ -3,6 +3,39 @@
 window.addEventListener('load', function () {
 
   // -------------------------------------------------------
+  // 0. MOBILE NAV TOGGLE — hamburger open/close
+  // -------------------------------------------------------
+  var navToggle = document.getElementById('nav-toggle');
+  var navbar    = document.getElementById('navbar');
+
+  if (navToggle && navbar) {
+    navToggle.addEventListener('click', function () {
+      var isOpen = navbar.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', isOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação');
+    });
+
+    // Close menu when any nav link is clicked (anchor navigation)
+    document.querySelectorAll('.nav-links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        navbar.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.setAttribute('aria-label', 'Abrir menu de navegação');
+      });
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && navbar.classList.contains('nav-open')) {
+        navbar.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.setAttribute('aria-label', 'Abrir menu de navegação');
+        navToggle.focus();
+      }
+    });
+  }
+
+  // -------------------------------------------------------
   // 1. TYPEWRITER — hero subtitle
   // -------------------------------------------------------
   var heroText = 'DRONE NACIONAL · ASA FIXA SOLAR · VIGILÂNCIA URBANA AUTÔNOMA';
