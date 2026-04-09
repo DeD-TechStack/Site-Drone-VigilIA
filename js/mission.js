@@ -1,6 +1,9 @@
-// mission.js — Simulador de Missão do VigilIA
+// mission.js — Mission simulator: animated canvas phases + phase selector
 
-/* === Funções de desenho por fase === */
+/* ==========================================================
+   Phase drawing functions
+   Each receives (canvas, progress 0→1) and renders one frame.
+   ========================================================== */
 
 function drawVTOL(canvas, progress) {
   var ctx = canvas.getContext('2d');
@@ -9,15 +12,15 @@ function drawVTOL(canvas, progress) {
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
 
-  var cx = W / 2, cy = H * 0.55;
+  var cx    = W / 2, cy = H * 0.55;
   var alpha = Math.min(progress * 2, 1);
 
-  // Setas verticais subindo
+  // Vertical lift arrows
   ctx.save();
-  ctx.globalAlpha = alpha;
-  ctx.strokeStyle = '#00ff41';
-  ctx.lineWidth = 2;
-  [-60, 0, 60].forEach(function(dx) {
+  ctx.globalAlpha  = alpha;
+  ctx.strokeStyle  = '#00ff41';
+  ctx.lineWidth    = 2;
+  [-60, 0, 60].forEach(function (dx) {
     var ax = cx + dx;
     var ay = cy - 60 - progress * 30;
     ctx.beginPath();
@@ -30,16 +33,16 @@ function drawVTOL(canvas, progress) {
   });
   ctx.restore();
 
-  // Fuselagem (frente)
+  // Fuselage (front view)
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = '#00ff41';
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth   = 1.5;
   ctx.beginPath();
   ctx.ellipse(cx, cy, 50, 14, 0, 0, Math.PI * 2);
   ctx.stroke();
 
-  // Asas
+  // Wings
   ctx.beginPath();
   ctx.moveTo(cx - 50, cy);
   ctx.lineTo(cx - 110, cy - 10);
@@ -53,11 +56,11 @@ function drawVTOL(canvas, progress) {
   ctx.lineTo(cx + 50, cy + 8);
   ctx.stroke();
 
-  // Rotores pulsando
+  // Rotors (pulsing)
   var pulse = 0.5 + 0.5 * Math.sin(Date.now() / 80);
-  [cx - 100, cx - 60, cx + 60, cx + 100].forEach(function(rx) {
+  [cx - 100, cx - 60, cx + 60, cx + 100].forEach(function (rx) {
     ctx.strokeStyle = 'rgba(0,255,65,' + (0.4 + 0.6 * pulse) + ')';
-    ctx.lineWidth = 1;
+    ctx.lineWidth   = 1;
     ctx.beginPath();
     ctx.arc(rx, cy - 8, 16, 0, Math.PI * 2);
     ctx.stroke();
@@ -70,9 +73,8 @@ function drawVTOL(canvas, progress) {
   });
   ctx.restore();
 
-  // Label
   ctx.fillStyle = '#334433';
-  ctx.font = '11px monospace';
+  ctx.font      = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('VTOL ATIVO — DECOLAGEM VERTICAL', cx, H - 15);
 }
@@ -85,34 +87,31 @@ function drawTransicao(canvas, progress) {
   ctx.fillRect(0, 0, W, H);
 
   var alpha = Math.min(progress * 2, 1);
+  var cx = W * 0.5, cy = H * 0.5;
+
   ctx.save();
   ctx.globalAlpha = alpha;
 
-  var cx = W * 0.5, cy = H * 0.5;
-
-  // Arco de trajetória
+  // Trajectory arc
   ctx.strokeStyle = 'rgba(0,255,65,0.3)';
-  ctx.lineWidth = 1;
+  ctx.lineWidth   = 1;
   ctx.setLineDash([4, 4]);
   ctx.beginPath();
   ctx.arc(W * 0.15, H * 0.8, W * 0.45, -Math.PI * 0.7, -Math.PI * 0.2);
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // Drone de perfil
+  // Drone (side profile)
   ctx.strokeStyle = '#00ff41';
-  ctx.lineWidth = 1.5;
-  // Fuselagem
+  ctx.lineWidth   = 1.5;
   ctx.beginPath();
   ctx.ellipse(cx, cy, 55, 12, -0.15, 0, Math.PI * 2);
   ctx.stroke();
-  // Asa
   ctx.beginPath();
   ctx.moveTo(cx - 10, cy - 4);
   ctx.lineTo(cx - 80, cy - 20);
   ctx.lineTo(cx + 30, cy - 4);
   ctx.stroke();
-  // V-tail
   ctx.beginPath();
   ctx.moveTo(cx - 50, cy + 4);
   ctx.lineTo(cx - 65, cy + 20);
@@ -120,10 +119,10 @@ function drawTransicao(canvas, progress) {
   ctx.lineTo(cx - 35, cy + 20);
   ctx.stroke();
 
-  // Seta horizontal de direção
+  // Direction arrow
   var ax = cx + 80;
   ctx.strokeStyle = '#00cc33';
-  ctx.lineWidth = 2;
+  ctx.lineWidth   = 2;
   ctx.beginPath();
   ctx.moveTo(cx + 60, cy);
   ctx.lineTo(ax, cy);
@@ -134,7 +133,7 @@ function drawTransicao(canvas, progress) {
 
   ctx.restore();
   ctx.fillStyle = '#334433';
-  ctx.font = '11px monospace';
+  ctx.font      = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('TRANSIÇÃO VTOL → ASA FIXA (~8s a 30m AGL)', W / 2, H - 15);
 }
@@ -152,9 +151,9 @@ function drawCruzeiro(canvas, progress) {
   ctx.save();
   ctx.globalAlpha = alpha;
 
-  // Drone perfil
+  // Drone (side profile)
   ctx.strokeStyle = '#00ff41';
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth   = 1.5;
   ctx.beginPath();
   ctx.ellipse(cx, cy, 55, 11, 0, 0, Math.PI * 2);
   ctx.stroke();
@@ -170,9 +169,9 @@ function drawCruzeiro(canvas, progress) {
   ctx.lineTo(cx - 35, cy + 18);
   ctx.stroke();
 
-  // Seta horizontal
+  // Direction arrow
   ctx.strokeStyle = '#00cc33';
-  ctx.lineWidth = 2;
+  ctx.lineWidth   = 2;
   ctx.beginPath();
   ctx.moveTo(cx + 60, cy);
   ctx.lineTo(cx + 90, cy);
@@ -181,40 +180,37 @@ function drawCruzeiro(canvas, progress) {
   ctx.lineTo(cx + 78, cy + 7);
   ctx.stroke();
 
-  // Raios solares nas asas
+  // Solar rays on wings
   var solarPulse = 0.5 + 0.5 * Math.sin(Date.now() / 400);
   ctx.strokeStyle = 'rgba(255,200,0,' + (0.2 + 0.3 * solarPulse) + ')';
-  ctx.lineWidth = 1;
+  ctx.lineWidth   = 1;
   for (var s = 0; s < 5; s++) {
     var sx = cx - 80 + s * 18;
     ctx.beginPath();
-    ctx.moveTo(sx, cy - 22);
-    ctx.lineTo(sx - 4, cy - 30);
-    ctx.moveTo(sx, cy - 22);
-    ctx.lineTo(sx + 4, cy - 30);
-    ctx.moveTo(sx, cy - 22);
-    ctx.lineTo(sx, cy - 32);
+    ctx.moveTo(sx, cy - 22); ctx.lineTo(sx - 4, cy - 30);
+    ctx.moveTo(sx, cy - 22); ctx.lineTo(sx + 4, cy - 30);
+    ctx.moveTo(sx, cy - 22); ctx.lineTo(sx,     cy - 32);
     ctx.stroke();
   }
 
-  // Bateria enchendo
-  var bx = W - 80, by = H * 0.3;
-  ctx.strokeStyle = '#00cc33';
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(bx, by, 50, 22);
-  ctx.fillStyle = '#003300';
-  ctx.fillRect(bx + 50, by + 7, 6, 8);
+  // Battery fill
+  var bx   = W - 80, by = H * 0.3;
   var fill = Math.min(progress, 0.85);
-  ctx.fillStyle = '#00ff41';
+  ctx.strokeStyle = '#00cc33';
+  ctx.lineWidth   = 1.5;
+  ctx.strokeRect(bx, by, 50, 22);
+  ctx.fillStyle   = '#003300';
+  ctx.fillRect(bx + 50, by + 7, 6, 8);
+  ctx.fillStyle   = '#00ff41';
   ctx.fillRect(bx + 2, by + 2, 46 * fill, 18);
-  ctx.fillStyle = '#00ff41';
-  ctx.font = '10px monospace';
-  ctx.textAlign = 'center';
+  ctx.fillStyle   = '#00ff41';
+  ctx.font        = '10px monospace';
+  ctx.textAlign   = 'center';
   ctx.fillText('BAT', bx + 25, by + 35);
 
   ctx.restore();
   ctx.fillStyle = '#334433';
-  ctx.font = '11px monospace';
+  ctx.font      = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('CRUZEIRO SOLAR — 65 km/h — MOTOR PUSHER ATIVO', W / 2, H - 15);
 }
@@ -232,9 +228,9 @@ function drawPatrulha(canvas, progress) {
   ctx.save();
   ctx.globalAlpha = alpha;
 
-  // Vista de baixo do drone
+  // Drone (bottom view)
   ctx.strokeStyle = '#00ff41';
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth   = 1.5;
   ctx.beginPath();
   ctx.ellipse(cx, cy, 30, 10, 0, 0, Math.PI * 2);
   ctx.stroke();
@@ -249,14 +245,12 @@ function drawPatrulha(canvas, progress) {
   ctx.lineTo(cx + 30, cy + 4);
   ctx.stroke();
 
-  // Cone de câmera
+  // Camera cone
   ctx.strokeStyle = 'rgba(0,255,65,0.2)';
-  ctx.lineWidth = 1;
+  ctx.lineWidth   = 1;
   ctx.beginPath();
-  ctx.moveTo(cx, cy + 10);
-  ctx.lineTo(cx - 70, H - 40);
-  ctx.moveTo(cx, cy + 10);
-  ctx.lineTo(cx + 70, H - 40);
+  ctx.moveTo(cx, cy + 10); ctx.lineTo(cx - 70, H - 40);
+  ctx.moveTo(cx, cy + 10); ctx.lineTo(cx + 70, H - 40);
   ctx.stroke();
   ctx.strokeStyle = 'rgba(0,255,65,0.08)';
   ctx.beginPath();
@@ -264,34 +258,34 @@ function drawPatrulha(canvas, progress) {
   ctx.lineTo(cx + 70, H - 40);
   ctx.stroke();
 
-  // Retângulos de detecção piscando
+  // Detection boxes (blinking)
   var blink = Math.sin(Date.now() / 300) > 0;
   if (blink) {
     ctx.strokeStyle = '#cc4444';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth   = 1.5;
     ctx.strokeRect(cx - 50, H * 0.6, 40, 50);
-    ctx.fillStyle = '#cc4444';
-    ctx.font = '9px monospace';
-    ctx.textAlign = 'left';
+    ctx.fillStyle   = '#cc4444';
+    ctx.font        = '9px monospace';
+    ctx.textAlign   = 'left';
     ctx.fillText('PESSOA', cx - 50, H * 0.6 - 4);
   }
   ctx.strokeStyle = '#ffaa00';
-  ctx.lineWidth = 1;
+  ctx.lineWidth   = 1;
   ctx.strokeRect(cx + 20, H * 0.55, 60, 35);
-  ctx.fillStyle = '#ffaa00';
-  ctx.font = '9px monospace';
-  ctx.textAlign = 'left';
+  ctx.fillStyle   = '#ffaa00';
+  ctx.font        = '9px monospace';
+  ctx.textAlign   = 'left';
   ctx.fillText('VEÍCULO', cx + 20, H * 0.55 - 4);
 
-  // IA FPS
+  // AI FPS overlay
   ctx.fillStyle = '#00ff41';
-  ctx.font = '10px monospace';
+  ctx.font      = '10px monospace';
   ctx.textAlign = 'right';
   ctx.fillText('IA: 45 FPS | YOLOv8n', W - 10, 16);
 
   ctx.restore();
   ctx.fillStyle = '#334433';
-  ctx.font = '11px monospace';
+  ctx.font      = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('PATRULHA — DETECÇÃO EM TEMPO REAL — JETSON ORIN NX', W / 2, H - 15);
 }
@@ -303,27 +297,27 @@ function drawAlerta(canvas, progress) {
   ctx.fillStyle = '#000a00';
   ctx.fillRect(0, 0, W, H);
 
-  var cx = W / 2, cy = H * 0.45;
+  var cx    = W / 2, cy = H * 0.45;
   var alpha = Math.min(progress * 2, 1);
 
   ctx.save();
   ctx.globalAlpha = alpha;
 
-  // Ondas de sinal
+  // Signal waves
   var waveTime = Date.now() / 600;
   for (var w = 1; w <= 4; w++) {
-    var r = 30 + w * 25;
+    var r      = 30 + w * 25;
     var wAlpha = Math.max(0, 0.6 - w * 0.12) * (0.5 + 0.5 * Math.sin(waveTime - w));
     ctx.strokeStyle = 'rgba(68,136,255,' + wAlpha + ')';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth   = 1.5;
     ctx.beginPath();
     ctx.arc(cx, cy, r * progress, 0, Math.PI * 2);
     ctx.stroke();
   }
 
-  // Ícone triangular de alerta
+  // Alert triangle icon
   ctx.strokeStyle = '#ffaa00';
-  ctx.lineWidth = 2;
+  ctx.lineWidth   = 2;
   ctx.beginPath();
   ctx.moveTo(cx, cy - 22);
   ctx.lineTo(cx - 20, cy + 12);
@@ -331,24 +325,24 @@ function drawAlerta(canvas, progress) {
   ctx.closePath();
   ctx.stroke();
   ctx.fillStyle = '#ffaa00';
-  ctx.font = 'bold 14px monospace';
+  ctx.font      = 'bold 14px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('!', cx, cy + 10);
 
-  // Texto CELL BROADCAST
+  // Cell broadcast label (blinking)
   var cbAlpha = Math.sin(Date.now() / 400) > 0 ? 1 : 0.3;
   ctx.fillStyle = 'rgba(68,136,255,' + cbAlpha + ')';
-  ctx.font = 'bold 13px monospace';
+  ctx.font      = 'bold 13px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('CELL BROADCAST ATIVO', cx, cy + 50);
 
   ctx.fillStyle = '#88bb88';
-  ctx.font = '10px monospace';
+  ctx.font      = '10px monospace';
   ctx.fillText('LATÊNCIA < 2s | ANATEL CB', cx, cy + 68);
 
   ctx.restore();
   ctx.fillStyle = '#334433';
-  ctx.font = '11px monospace';
+  ctx.font      = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('ALERTA DISPARADO — OPERADOR COP-SP AUTORIZOU', W / 2, H - 15);
 }
@@ -361,16 +355,16 @@ function drawPouso(canvas, progress) {
   ctx.fillRect(0, 0, W, H);
 
   var alpha = Math.min(progress * 2, 1);
-  var cx = W / 2;
-  var cy = H * 0.25 + progress * H * 0.35;
+  var cx    = W / 2;
+  var cy    = H * 0.25 + progress * H * 0.35;
 
   ctx.save();
   ctx.globalAlpha = alpha;
 
-  // Setas verticais descendo
+  // Descent arrows
   ctx.strokeStyle = '#00cc33';
-  ctx.lineWidth = 2;
-  [-50, 0, 50].forEach(function(dx) {
+  ctx.lineWidth   = 2;
+  [-50, 0, 50].forEach(function (dx) {
     var ax = cx + dx;
     var ay = cy + 50;
     ctx.beginPath();
@@ -382,9 +376,9 @@ function drawPouso(canvas, progress) {
     ctx.stroke();
   });
 
-  // Drone de frente
+  // Drone (front view)
   ctx.strokeStyle = '#00ff41';
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth   = 1.5;
   ctx.beginPath();
   ctx.ellipse(cx, cy, 45, 13, 0, 0, Math.PI * 2);
   ctx.stroke();
@@ -399,24 +393,24 @@ function drawPouso(canvas, progress) {
   ctx.lineTo(cx + 45, cy + 6);
   ctx.stroke();
 
-  // Indicador de bateria
-  var bx = W - 90, by = 20;
-  ctx.strokeStyle = '#00cc33';
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(bx, by, 60, 20);
-  ctx.fillStyle = '#003300';
-  ctx.fillRect(bx + 60, by + 6, 6, 8);
+  // Battery indicator
+  var bx     = W - 90, by = 20;
   var batPct = 0.4 + 0.2 * progress;
-  ctx.fillStyle = '#00ff41';
+  ctx.strokeStyle = '#00cc33';
+  ctx.lineWidth   = 1.5;
+  ctx.strokeRect(bx, by, 60, 20);
+  ctx.fillStyle   = '#003300';
+  ctx.fillRect(bx + 60, by + 6, 6, 8);
+  ctx.fillStyle   = '#00ff41';
   ctx.fillRect(bx + 2, by + 2, 56 * batPct, 16);
-  ctx.fillStyle = '#00ff41';
-  ctx.font = '10px monospace';
-  ctx.textAlign = 'center';
+  ctx.fillStyle   = '#00ff41';
+  ctx.font        = '10px monospace';
+  ctx.textAlign   = 'center';
   ctx.fillText(Math.round(batPct * 100) + '%', bx + 30, by + 34);
 
-  // Linha do solo
+  // Ground line
   ctx.strokeStyle = '#003300';
-  ctx.lineWidth = 1;
+  ctx.lineWidth   = 1;
   ctx.beginPath();
   ctx.moveTo(20, H - 35);
   ctx.lineTo(W - 20, H - 35);
@@ -424,119 +418,125 @@ function drawPouso(canvas, progress) {
 
   ctx.restore();
   ctx.fillStyle = '#334433';
-  ctx.font = '11px monospace';
+  ctx.font      = '11px monospace';
   ctx.textAlign = 'center';
   ctx.fillText('RETORNO AUTOMÁTICO — RTL GPS RTK — POUSO VTOL', W / 2, H - 15);
 }
 
-/* === Dados das fases === */
+/* ==========================================================
+   Phase data — stats, description, color, draw function
+   ========================================================== */
 var PHASES = [
   {
-    name: 'DECOLAGEM VTOL',
+    name:  'DECOLAGEM VTOL',
     stats: [
       { label: 'CONSUMO', value: '300W' },
-      { label: 'SOLAR', value: '70W' },
+      { label: 'SOLAR',   value: '70W'  },
       { label: 'BALANÇO', value: '−230W' },
       { label: 'ALTITUDE', value: '0→50m' }
     ],
-    desc: 'Os 4 rotores brushless T-Motor MN3110 ativam para decolagem vertical. Motor pusher desligado. Consumo de pico: 280–320W. Duração: ~5 min. Bateria Li-Ion fornece toda a energia nesta fase.',
+    desc:  'Os 4 rotores brushless T-Motor MN3110 ativam para decolagem vertical. Motor pusher desligado. Consumo de pico: 280–320W. Duração: ~5 min. Bateria Li-Ion fornece toda a energia nesta fase.',
     color: '#cc4444',
-    draw: drawVTOL
+    draw:  drawVTOL
   },
   {
-    name: 'SUBIDA E TRANSIÇÃO',
+    name:  'SUBIDA E TRANSIÇÃO',
     stats: [
-      { label: 'CONSUMO', value: '165W' },
-      { label: 'SOLAR', value: '70W' },
-      { label: 'BALANÇO', value: '−95W' },
+      { label: 'CONSUMO',  value: '165W'    },
+      { label: 'SOLAR',    value: '70W'     },
+      { label: 'BALANÇO',  value: '−95W'    },
       { label: 'ALTITUDE', value: '50→200m' }
     ],
-    desc: 'Drone sobe para altitude de cruzeiro. Motor pusher inicia gradualmente enquanto rotores VTOL reduzem potência. Transição completa em ~8 segundos a 30m AGL. Consumo: 150–180W.',
+    desc:  'Drone sobe para altitude de cruzeiro. Motor pusher inicia gradualmente enquanto rotores VTOL reduzem potência. Transição completa em ~8 segundos a 30m AGL. Consumo: 150–180W.',
     color: '#ffaa00',
-    draw: drawTransicao
+    draw:  drawTransicao
   },
   {
-    name: 'CRUZEIRO SOLAR',
+    name:  'CRUZEIRO SOLAR',
     stats: [
-      { label: 'CONSUMO', value: '95W' },
-      { label: 'SOLAR', value: '70W' },
-      { label: 'BALANÇO', value: '−25W' },
+      { label: 'CONSUMO',    value: '95W'     },
+      { label: 'SOLAR',      value: '70W'     },
+      { label: 'BALANÇO',    value: '−25W'    },
       { label: 'VELOCIDADE', value: '65 km/h' }
     ],
-    desc: 'Voo de asa fixa em cruzeiro. Rotores VTOL recolhidos. Painéis SunPower C60 geram 96W de pico. Em modo planar com vento favorável o motor pode ser desligado — balanço positivo recarrega as baterias.',
+    desc:  'Voo de asa fixa em cruzeiro. Rotores VTOL recolhidos. Painéis SunPower C60 geram 96W de pico. Em modo planar com vento favorável o motor pode ser desligado — balanço positivo recarrega as baterias.',
     color: '#ffaa00',
-    draw: drawCruzeiro
+    draw:  drawCruzeiro
   },
   {
-    name: 'PATRULHA E DETECÇÃO IA',
+    name:  'PATRULHA E DETECÇÃO IA',
     stats: [
-      { label: 'CONSUMO', value: '70W' },
-      { label: 'SOLAR', value: '70W' },
-      { label: 'BALANÇO', value: '±0W' },
-      { label: 'IA FPS', value: '45 FPS' }
+      { label: 'CONSUMO', value: '70W'    },
+      { label: 'SOLAR',   value: '70W'    },
+      { label: 'BALANÇO', value: '±0W'   },
+      { label: 'IA FPS',  value: '45 FPS' }
     ],
-    desc: 'Jetson Orin NX executa YOLOv8n em tempo real: detecção de pessoas, veículos e comportamentos suspeitos. Câmera Sony IMX477 com gimbal Gremsy T3 estabilizado. Feed criptografado AES-256 para o COP-SP via 4G/5G.',
+    desc:  'Jetson Orin NX executa YOLOv8n em tempo real: detecção de pessoas, veículos e comportamentos suspeitos. Câmera Sony IMX477 com gimbal Gremsy T3 estabilizado. Feed criptografado AES-256 para o COP-SP via 4G/5G.',
     color: '#00ff41',
-    draw: drawPatrulha
+    draw:  drawPatrulha
   },
   {
-    name: 'ALERTA — CELL BROADCAST',
+    name:  'ALERTA — CELL BROADCAST',
     stats: [
-      { label: 'LATÊNCIA', value: '<2s' },
-      { label: 'ALCANCE', value: 'Célula 4G' },
-      { label: 'OPERADOR', value: 'COP-SP' },
+      { label: 'LATÊNCIA',  value: '<2s'      },
+      { label: 'ALCANCE',   value: 'Célula 4G' },
+      { label: 'OPERADOR',  value: 'COP-SP'   },
       { label: 'PROTOCOLO', value: 'ANATEL CB' }
     ],
-    desc: 'IA detecta ocorrência com confiança > 95%. Operador humano no COP-SP confirma e autoriza alerta. Sistema Cell Broadcast da Anatel dispara notificação para todos os celulares na célula afetada em menos de 2 segundos.',
+    desc:  'IA detecta ocorrência com confiança > 95%. Operador humano no COP-SP confirma e autoriza alerta. Sistema Cell Broadcast da Anatel dispara notificação para todos os celulares na célula afetada em menos de 2 segundos.',
     color: '#4488ff',
-    draw: drawAlerta
+    draw:  drawAlerta
   },
   {
-    name: 'RETORNO E POUSO',
+    name:  'RETORNO E POUSO',
     stats: [
-      { label: 'CONSUMO', value: '280W' },
-      { label: 'SOLAR', value: '70W' },
-      { label: 'BAT RESTANTE', value: '40–60%' },
-      { label: 'MODO', value: 'RTL AUTO' }
+      { label: 'CONSUMO',      value: '280W'    },
+      { label: 'SOLAR',        value: '70W'     },
+      { label: 'BAT RESTANTE', value: '40–60%'  },
+      { label: 'MODO',         value: 'RTL AUTO' }
     ],
-    desc: 'GPS RTK Here3+ guia retorno automático (RTL). Rotores VTOL reativam para pouso vertical. Bateria retém 40–60% de carga — possibilitando segunda missão no mesmo dia sem recarga completa.',
+    desc:  'GPS RTK Here3+ guia retorno automático (RTL). Rotores VTOL reativam para pouso vertical. Bateria retém 40–60% de carga — possibilitando segunda missão no mesmo dia sem recarga completa.',
     color: '#cc4444',
-    draw: drawPouso
+    draw:  drawPouso
   }
 ];
 
-/* === Lógica de renderização e interação === */
-var currentPhase = 0;
-var missionAnimId = null;
+/* ==========================================================
+   Rendering and interaction logic
+   ========================================================== */
+var currentPhase   = 0;
+var missionAnimId  = null;
 var autoAdvanceTimer = null;
-var isPaused = false;
+var isPaused       = false;
 
 function renderPhase(index) {
   currentPhase = index;
-  var phase = PHASES[index];
+  var phase  = PHASES[index];
   var canvas = document.getElementById('mission-canvas');
   if (!canvas) return;
 
-  // Stats
+  // Update stats panel
   var statsEl = document.getElementById('mission-stats');
   if (statsEl) {
-    statsEl.innerHTML = phase.stats.map(function(s) {
-      return '<div class="m-stat"><span class="m-stat-label">' + s.label + '</span>' +
-             '<span class="m-stat-value" style="color:' + phase.color + '">' + s.value + '</span></div>';
+    statsEl.innerHTML = phase.stats.map(function (s) {
+      return '<div class="m-stat">' +
+             '<span class="m-stat-label">' + s.label + '</span>' +
+             '<span class="m-stat-value" style="color:' + phase.color + '">' + s.value + '</span>' +
+             '</div>';
     }).join('');
   }
 
-  // Desc
+  // Update description panel
   var descEl = document.getElementById('mission-desc');
   if (descEl) {
     descEl.style.borderLeftColor = phase.color;
     descEl.textContent = phase.desc;
   }
 
-  // Animação do canvas
+  // Run canvas animation
   if (missionAnimId) cancelAnimationFrame(missionAnimId);
   var startTime = null;
-  var duration = 600;
+  var duration  = 600;
 
   function loop(ts) {
     if (!startTime) startTime = ts;
@@ -545,7 +545,7 @@ function renderPhase(index) {
     if (progress < 1) {
       missionAnimId = requestAnimationFrame(loop);
     } else {
-      // Manter animação viva para as fases com elementos animados contínuos
+      // Keep alive for phases with continuous animations (rotors, blink, etc.)
       function keepAlive() {
         phase.draw(canvas, 1);
         missionAnimId = requestAnimationFrame(keepAlive);
@@ -553,45 +553,55 @@ function renderPhase(index) {
       missionAnimId = requestAnimationFrame(keepAlive);
     }
   }
+
   missionAnimId = requestAnimationFrame(loop);
 }
 
 function startAutoAdvance() {
   if (autoAdvanceTimer) clearInterval(autoAdvanceTimer);
-  autoAdvanceTimer = setInterval(function() {
-    if (!isPaused) {
-      var next = (currentPhase + 1) % PHASES.length;
-      document.querySelectorAll('.phase-item').forEach(function(p) {
-        p.classList.remove('active');
-      });
-      var items = document.querySelectorAll('.phase-item');
-      if (items[next]) items[next].classList.add('active');
-      renderPhase(next);
-    }
+  autoAdvanceTimer = setInterval(function () {
+    if (isPaused) return;
+    var next  = (currentPhase + 1) % PHASES.length;
+    var items = document.querySelectorAll('.phase-item');
+    items.forEach(function (p) { p.classList.remove('active'); });
+    if (items[next]) items[next].classList.add('active');
+    renderPhase(next);
   }, 5000);
 }
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
   var items = document.querySelectorAll('.phase-item');
-  items.forEach(function(item, i) {
-    item.addEventListener('click', function() {
-      items.forEach(function(p) { p.classList.remove('active'); });
+
+  items.forEach(function (item, i) {
+    function activate() {
+      items.forEach(function (p) { p.classList.remove('active'); });
       item.classList.add('active');
       renderPhase(i);
+    }
+
+    item.addEventListener('click', activate);
+
+    // Keyboard support (Enter / Space) for role="button" divs
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
+      }
     });
   });
 
+  // Pause auto-advance while hovering the simulator
   var layout = document.querySelector('.mission-layout');
   if (layout) {
-    layout.addEventListener('mouseenter', function() { isPaused = true; });
-    layout.addEventListener('mouseleave', function() { isPaused = false; });
+    layout.addEventListener('mouseenter', function () { isPaused = true; });
+    layout.addEventListener('mouseleave', function () { isPaused = false; });
   }
 
-  // Iniciar quando a seção entrar no viewport
+  // Start when section enters viewport
   var secaoOp = document.getElementById('secao-op');
   if (secaoOp) {
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           renderPhase(0);
           startAutoAdvance();

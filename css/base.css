@@ -1,0 +1,37 @@
+/* ==============================================
+   base.css — Reset, CSS variables, base typography
+   ============================================== */
+
+/* --- Reset --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin:     0;
+  padding:    0;
+}
+
+/* --- Design tokens --- */
+:root {
+  --green:     #00ff41;
+  --green-dim: #003300;
+  --green-mid: #00cc33;
+  --bg:        #000a00;
+  --bg2:       #001400;
+  --font:      'Courier New', Courier, monospace;
+}
+
+/* --- Document root --- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:  var(--bg);
+  color:       var(--green);
+  font-family: var(--font);
+  overflow-x:  hidden;
+}
+
+/* --- Base line-height for readable text --- */
+p, li, td {
+  line-height: 1.85;
+}

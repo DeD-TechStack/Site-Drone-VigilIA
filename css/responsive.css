@@ -1,0 +1,30 @@
+/* ==============================================
+   responsive.css — Media queries (must load last)
+   ============================================== */
+
+@media (max-width: 900px) {
+  /* Hero: stack vertically */
+  .hero-wrapper   { flex-direction: column; }
+  .hero-visual    { width: 100%; }
+
+  /* Mission: single column, phases wrap */
+  .mission-layout { grid-template-columns: 1fr; }
+  .mission-phases { flex-direction: row; flex-wrap: wrap; }
+  .phase-item     { flex: 1 1 calc(33% - 4px); }
+
+  /* Tech grid: 2 columns */
+  .tech-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Reduce section padding */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 4rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .phase-item  { flex: 1 1 calc(50% - 4px); }
+  .tech-grid   { grid-template-columns: 1fr; }
+  .hero-title  { font-size: 3.5rem; }
+  .stats-grid  { grid-template-columns: repeat(2, 1fr); }
+}

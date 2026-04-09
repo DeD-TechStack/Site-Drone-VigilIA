@@ -1,31 +1,48 @@
-// timeline.js — Timeline expand/collapse + Tabs de componentes
+// timeline.js — Timeline expand/collapse + component tabs
 
 function initTimeline() {
-  document.querySelectorAll('.tl-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const node = header.closest('.tl-node');
-      node.classList.toggle('expanded');
+  document.querySelectorAll('.tl-header').forEach(function (header) {
+    function toggle() {
+      var node = header.closest('.tl-node');
+      if (node) node.classList.toggle('expanded');
+    }
+
+    header.addEventListener('click', toggle);
+
+    // Keyboard support (Enter / Space) for role="button" divs
+    header.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
     });
   });
 
-  // Expandir automaticamente os nós concluídos
-  document.querySelectorAll('.tl-node.completed').forEach(node => {
+  // Auto-expand completed nodes on load
+  document.querySelectorAll('.tl-node.completed').forEach(function (node) {
     node.classList.add('expanded');
   });
 }
 
 function initComponentTabs() {
-  document.querySelectorAll('.comp-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.comp-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.comp-panel').forEach(p => p.classList.remove('active'));
+  var tabs   = document.querySelectorAll('.comp-tab');
+  var panels = document.querySelectorAll('.comp-panel');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      // Deactivate all tabs and panels
+      tabs.forEach(function (t)   { t.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
+
+      // Activate selected tab and its panel
       tab.classList.add('active');
-      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      var panel = document.getElementById('panel-' + tab.dataset.panel);
+      if (panel) panel.classList.add('active');
     });
   });
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', function () {
   initTimeline();
   initComponentTabs();
 });

@@ -1,0 +1,30 @@
+/* ==============================================
+   utilities.css — Animations, keyframes, state modifiers
+   ============================================== */
+
+/* ---- Text blink utility ---- */
+.blink-text { animation: blink 1s step-end infinite; }
+
+/* ---- Risk level cell modifiers ---- */
+.risk-high { color: #ff4444 !important; }
+.risk-med  { color: #ffaa00 !important; }
+.risk-low  { color: var(--green) !important; }
+
+/* ---- Keyframe animations ---- */
+
+/* HUD crosshair rings pulsing outward */
+@keyframes ring-pulse {
+  0%   { transform: translate(-50%,-50%) scale(0.8); opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(1.6); opacity: 0; }
+}
+
+/* HUD scan line sweeping top to bottom */
+@keyframes scan-sweep {
+  0%   { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* General blink (opacity toggle) */
+@keyframes blink {
+  50% { opacity: 0; }
+}
