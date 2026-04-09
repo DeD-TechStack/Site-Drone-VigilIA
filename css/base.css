@@ -11,12 +11,37 @@
 
 /* --- Design tokens --- */
 :root {
-  --green:     #00ff41;
-  --green-dim: #003300;
-  --green-mid: #00cc33;
-  --bg:        #000a00;
-  --bg2:       #001400;
-  --font:      'Courier New', Courier, monospace;
+  /* Core palette */
+  --green:        #00ff41;
+  --green-bright: #44ff77;
+  --green-dim:    #003300;
+  --green-mid:    #00cc33;
+  --green-faint:  rgba(0,255,65,0.07);
+  --green-glow:   rgba(0,255,65,0.18);
+  --green-glow-strong: rgba(0,255,65,0.35);
+
+  /* Backgrounds */
+  --bg:  #000a00;
+  --bg2: #001400;
+  --bg3: #000d00;
+
+  /* Surface overlays */
+  --surface-1: rgba(0,20,0,0.40);
+  --surface-2: rgba(0,30,0,0.55);
+  --surface-3: rgba(0,50,0,0.45);
+
+  /* Text */
+  --text-muted: #446644;
+  --text-body:  #88bb88;
+  --text-label: var(--green-mid);
+
+  /* Transitions */
+  --t-fast: 0.15s ease;
+  --t-std:  0.25s ease;
+  --t-slow: 0.4s ease;
+
+  /* Font */
+  --font: 'Courier New', Courier, monospace;
 }
 
 /* --- Document root --- */

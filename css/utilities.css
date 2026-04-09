@@ -5,8 +5,19 @@
 /* ---- Text blink utility ---- */
 .blink-text { animation: blink 1s step-end infinite; }
 
+/* ---- Visually hidden (screen reader only) ---- */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---- Risk level cell modifiers ---- */
-.risk-high { color: #ff4444 !important; }
+.risk-high { color: #ff5555 !important; font-weight: bold; }
 .risk-med  { color: #ffaa00 !important; }
 .risk-low  { color: var(--green) !important; }
 
@@ -14,14 +25,14 @@
 
 /* HUD crosshair rings pulsing outward */
 @keyframes ring-pulse {
-  0%   { transform: translate(-50%,-50%) scale(0.8); opacity: 0.8; }
-  100% { transform: translate(-50%,-50%) scale(1.6); opacity: 0; }
+  0%   { transform: translate(-50%,-50%) scale(0.75); opacity: 0.9; }
+  100% { transform: translate(-50%,-50%) scale(1.7);  opacity: 0;   }
 }
 
 /* HUD scan line sweeping top to bottom */
 @keyframes scan-sweep {
-  0%   { top: 0%; }
-  100% { top: 100%; }
+  0%   { top: -1%; }
+  100% { top: 101%; }
 }
 
 /* General blink (opacity toggle) */
@@ -34,13 +45,26 @@
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   /* Stop all looping animations */
-  .blink-text      { animation: none; }
-  .crosshair-ring  { animation: none; }
-  .hud-scanline    { animation: none; }
+  .blink-text     { animation: none; }
+  .crosshair-ring { animation: none; }
+  .hud-scanline   { animation: none; }
 
   /* Collapse transitions to instant */
-  section          { transition: none; }
-  .tl-body         { transition: none; }
-  .nav-toggle span { transition: none; }
-  .drone-img       { transition: none; }
+  section,
+  .tl-body,
+  .nav-toggle span,
+  .drone-img,
+  .hero-cta,
+  .hero-cta::before,
+  .subsys-card,
+  .subsys-card::before,
+  .comp-card,
+  .phase-item,
+  .roadmap-node,
+  .rm-circle,
+  .stat-block,
+  #navbar {
+    transition: none !important;
+    animation:  none !important;
+  }
 }

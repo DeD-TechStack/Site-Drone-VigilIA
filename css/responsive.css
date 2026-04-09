@@ -12,27 +12,35 @@
 
   #navbar {
     flex-wrap: wrap;
-    padding:   0.8rem 1.2rem;
+    padding:   0.75rem 1.2rem;
   }
 
   /* Nav links collapse to a hidden dropdown until .nav-open */
   .nav-links {
-    display:        none;        /* hidden by default on mobile */
+    display:        none;
     flex-direction: column;
     gap:            0;
     width:          100%;
-    order:          3;           /* below logo + toggle row */
-    border-top:     1px solid var(--green-dim);
-    padding:        0.5rem 0 0.8rem;
-    background:     rgba(0,10,0,0.97);
+    order:          3;
+    border-top:     1px solid rgba(0,50,0,0.4);
+    padding:        0.4rem 0 0.6rem;
+    background:     rgba(0,5,0,0.98);
   }
+  /* Remove underline indicator from mobile links — use block padding instead */
+  .nav-links a::after { display: none; }
 
   .nav-links li a {
     display:        block;
-    padding:        0.55rem 0.5rem;
-    font-size:      0.85rem;
-    letter-spacing: 0.12em;
-    border-bottom:  1px solid rgba(0,51,0,0.3);
+    padding:        0.6rem 0.8rem;
+    font-size:      0.82rem;
+    letter-spacing: 0.14em;
+    border-bottom:  1px solid rgba(0,40,0,0.35);
+    transition:     background var(--t-std), color var(--t-std), padding-left var(--t-std);
+  }
+  .nav-links li a:hover,
+  .nav-links li a.active {
+    background:   rgba(0,20,0,0.5);
+    padding-left: 1.2rem;
   }
   .nav-links li:last-child a { border-bottom: none; }
 
@@ -42,12 +50,9 @@
   /* ---- Hero: stack vertically ---- */
   .hero-wrapper {
     flex-direction: column;
-    gap:            2rem;
+    gap:            2.5rem;
   }
   .hero-visual { width: 100%; }
-
-  /* Tighten telemetry row on mid screens */
-  .hero-tel { gap: 1.2rem; flex-wrap: wrap; }
 
   /* ---- Mission: single column, phases wrap ---- */
   .mission-layout { grid-template-columns: 1fr; }
@@ -71,9 +76,9 @@
 
   /* ---- Hero ---- */
   .hero-title    { font-size: 3.2rem; }
-  .hero-tag      { font-size: 0.62rem; }
-  .hero-tel      { gap: 0.8rem; font-size: 0.7rem; }
-  .hero-cta      { width: 100%; text-align: center; }
+  .hero-tag      { font-size: 0.6rem; }
+  .hero-tel      { gap: 0.5rem; font-size: 0.68rem; }
+  .hero-cta      { width: 100%; text-align: center; padding: 0.8rem 1.5rem; }
 
   /* ---- Drone scene min-height on small screens ---- */
   .hero-drone-scene { min-height: 200px; }
@@ -96,18 +101,23 @@
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 3.5rem 1rem; }
 
-  /* ---- Roadmap: hide labels, show only circles ---- */
-  .rm-label   { font-size: 0.62rem; }
+  /* ---- Roadmap labels ---- */
+  .rm-label   { font-size: 0.6rem; }
+  .rm-label small { display: none; } /* hide dates on very small viewports */
 
-  /* ---- Comparative table: allow horizontal scroll ---- */
+  /* ---- Comparative table: touch scroll ---- */
   .comp-table-wrapper { -webkit-overflow-scrolling: touch; }
+
+  /* ---- HUD corners hidden on very small scene ---- */
+  .hero-drone-scene::before { display: none; }
 }
 
 /* ============================================================
    VERY SMALL  ≤ 380px
    ============================================================ */
 @media (max-width: 380px) {
-  .hero-title { font-size: 2.8rem; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .phase-item { flex: 1 1 100%; }
+  .hero-title    { font-size: 2.8rem; }
+  .stats-grid    { grid-template-columns: repeat(2, 1fr); }
+  .phase-item    { flex: 1 1 100%; }
+  .hero-tel span { font-size: 0.65rem; }
 }

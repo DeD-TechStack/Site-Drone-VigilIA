@@ -59,6 +59,21 @@ window.addEventListener('load', function () {
   }
 
   // -------------------------------------------------------
+  // 1b. NAVBAR SCROLLED STATE — shadow once user scrolls
+  // -------------------------------------------------------
+  if (navbar) {
+    var onScroll = function () {
+      if (window.scrollY > 10) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // set on load in case page is already scrolled
+  }
+
+  // -------------------------------------------------------
   // 2. BACK-TO-TOP BUTTON — show after 300px scroll
   // -------------------------------------------------------
   var btnTopo = document.getElementById('btn-topo');
@@ -66,7 +81,7 @@ window.addEventListener('load', function () {
   if (btnTopo) {
     window.addEventListener('scroll', function () {
       btnTopo.style.display = window.scrollY > 300 ? 'block' : 'none';
-    });
+    }, { passive: true });
   }
 
   // -------------------------------------------------------
@@ -113,18 +128,24 @@ window.addEventListener('load', function () {
 
   // -------------------------------------------------------
   // 5. TELEMETRY — simulate live updates every 3s
+  //    Sync HUD readouts and hero-tel chips simultaneously
   // -------------------------------------------------------
   setInterval(function () {
-    var solar = document.getElementById('tel-solar');
-    var bat   = document.getElementById('tel-bat');
+    var hudSolar  = document.getElementById('tel-solar');
+    var hudBat    = document.getElementById('tel-bat');
 
-    if (solar) {
-      solar.textContent = (55 + Math.floor(Math.random() * 36)).toString();
-    }
-    if (bat) {
-      var val = parseInt(bat.textContent, 10);
-      bat.textContent = Math.max(10, val - Math.round(Math.random())).toString();
-    }
+    var newSolar = (55 + Math.floor(Math.random() * 36)).toString();
+    if (hudSolar) hudSolar.textContent = newSolar;
+
+    var batVal = hudBat ? parseInt(hudBat.textContent, 10) : 88;
+    var newBat = Math.max(10, batVal - Math.round(Math.random())).toString();
+    if (hudBat) hudBat.textContent = newBat;
+
+    // Mirror values in hero-tel chips (look for strong elements by position)
+    var telChips = document.querySelectorAll('.hero-tel span strong');
+    // telChips[0] = SOLAR value, telChips[1] = BAT value
+    if (telChips[0]) telChips[0].textContent = newSolar;
+    if (telChips[1]) telChips[1].textContent = newBat;
   }, 3000);
 
   // -------------------------------------------------------

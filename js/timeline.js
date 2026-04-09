@@ -1,4 +1,4 @@
-// timeline.js — Timeline expand/collapse + component tabs
+// timeline.js — Timeline expand/collapse + component tabs + roadmap node links
 
 function initTimeline() {
   document.querySelectorAll('.tl-header').forEach(function (header) {
@@ -42,7 +42,44 @@ function initComponentTabs() {
   });
 }
 
+// Roadmap nodes — clicking navigates to and expands the matching timeline entry
+function initRoadmapNodes() {
+  var nodes = document.querySelectorAll('.roadmap-node[data-phase]');
+
+  nodes.forEach(function (node) {
+    function activate() {
+      var phase   = node.dataset.phase; // e.g. "F1"
+      var tlNode  = document.querySelector('.tl-node[data-phase="' + phase + '"]');
+
+      // Update active state on all roadmap nodes
+      nodes.forEach(function (n) { n.classList.remove('active'); });
+      node.classList.add('active');
+
+      if (!tlNode) return;
+
+      // Expand the target timeline node
+      tlNode.classList.add('expanded');
+
+      // Smooth scroll to it (give browser a tick to paint the expansion first)
+      setTimeout(function () {
+        tlNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+    }
+
+    node.addEventListener('click', activate);
+
+    // Keyboard: Enter or Space
+    node.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate();
+      }
+    });
+  });
+}
+
 window.addEventListener('load', function () {
   initTimeline();
   initComponentTabs();
+  initRoadmapNodes();
 });
