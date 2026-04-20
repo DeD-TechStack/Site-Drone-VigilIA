@@ -11,8 +11,10 @@ var chartsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').
 function setupHiDPICanvas(canvas) {
   var dpr  = window.devicePixelRatio || 1;
   var cssW = canvas.offsetWidth;
-  var cssH = parseInt(canvas.getAttribute('height'), 10)
-             || canvas.offsetHeight
+  // offsetHeight reflects explicit CSS height (stable across redraws).
+  // getAttribute fallback covers the first draw before CSS heights are applied.
+  var cssH = canvas.offsetHeight
+             || parseInt(canvas.getAttribute('height'), 10)
              || 200;
   if (!cssW || !cssH) return null;
   canvas.width  = Math.round(cssW * dpr);

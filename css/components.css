@@ -653,7 +653,15 @@
   border:     1px solid rgba(0,50,0,0.6);
   padding:    1.5rem;
   position:   relative;
+  overflow:   hidden;
 }
+/* Canvases fill chart-wrap width; explicit heights prevent aspect-ratio scaling artifacts */
+.chart-wrap canvas { display: block; width: 100%; }
+#canvas-energia    { height: 260px; }
+#canvas-gantt      { height: 240px; }
+#canvas-donut      { height: 240px; }
+#canvas-autonomia  { height: 200px; }
+#canvas-escala     { height: 220px; }
 /* Top-left accent mark */
 .chart-wrap::before {
   content:    '';
