@@ -3,6 +3,44 @@
    ============================================== */
 
 /* ============================================================
+   LARGE DESKTOP  ≤ 1200px
+   Smooth the transition before the layout hits its max-width.
+   Reduces heavy section padding on screens just above tablet.
+   ============================================================ */
+@media (max-width: 1200px) {
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding-left: 3rem; padding-right: 3rem; }
+}
+
+/* ============================================================
+   MEDIUM DESKTOP  ≤ 1024px
+   Handles the gap between full desktop and tablet breakpoint.
+   ============================================================ */
+@media (max-width: 1024px) {
+
+  /* ---- Section padding: step down before the 900px collapse ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 5rem 2.5rem; }
+
+  /* ---- Hero: constrain the visual panel before it gets too tight ---- */
+  .hero-visual { width: 420px; }
+
+  /* ---- Tech grid: 2 columns ahead of schedule ---- */
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* ---- Subsys grid: honour minimum width earlier ---- */
+  .subsys-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+  /* ---- Roadmap: slightly tighter nodes ---- */
+  .rm-circle  { width: 2.6rem; height: 2.6rem; font-size: 0.7rem; }
+  .rm-label   { font-size: 0.65rem; }
+}
+
+/* ============================================================
    TABLET / SMALL DESKTOP  ≤ 900px
    ============================================================ */
 @media (max-width: 900px) {
@@ -52,24 +90,44 @@
     flex-direction: column;
     gap:            2.5rem;
   }
-  .hero-visual { width: 100%; }
+  /* Full width, but max out so the drone scene doesn't get extreme */
+  .hero-visual {
+    width:     100%;
+    max-width: 540px;
+    margin:    0 auto;
+  }
 
   /* ---- Mission: single column, phases wrap ---- */
   .mission-layout  { grid-template-columns: 1fr; }
   .mphdr-status    { display: none; }
   /* ctrl row takes full width in the flex-wrap phase strip */
   .mission-ctrl    { flex: 0 0 100%; justify-content: center; }
-  .mission-phases { flex-direction: row; flex-wrap: wrap; }
-  .phase-item     { flex: 1 1 calc(33% - 4px); }
+  .mission-phases  { flex-direction: row; flex-wrap: wrap; }
+  .phase-item      { flex: 1 1 calc(33% - 4px); }
 
   /* ---- Tech grid: 2 columns ---- */
   .tech-grid { grid-template-columns: 1fr 1fr; }
 
-  /* ---- Reduce section padding ---- */
+  /* ---- Section padding ---- */
   #secao-1, #secao-op,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 4rem 1.5rem; }
+
+  /* ---- Reduce top padding on first section slightly ---- */
+  #secao-1 { padding-top: 5rem; }
+
+  /* ---- Roadmap: allow horizontal scroll on tablet if needed ---- */
+  .roadmap-track { gap: 0.25rem; padding: 1.5rem 0 2.5rem; }
+  .rm-circle     { width: 2.4rem; height: 2.4rem; font-size: 0.68rem; }
+  .rm-label      { font-size: 0.62rem; }
+  .rm-label small { font-size: 0.58rem; }
+
+  /* ---- Specs two-col: reduce gap ---- */
+  .specs-two-col { gap: 1.2rem; }
+
+  /* ---- Stats: smaller font on tablet ---- */
+  .stat-value { font-size: 2rem; }
 }
 
 /* ============================================================
@@ -85,64 +143,83 @@
 
   /* ---- Drone scene min-height on small screens ---- */
   .hero-drone-scene { min-height: 200px; }
+  /* HUD corners too small — hide decorative frame on smallest scene */
+  .hero-drone-scene::before { display: none; }
 
   /* ---- Phase items: 2-up ---- */
   .phase-item  { flex: 1 1 calc(50% - 4px); }
 
+  /* ---- Mission controls ---- */
+  .mission-ctrl { justify-content: center; }
+
+  /* ---- Phase header: hide status chip ---- */
+  .mphdr-status { display: none; }
+
   /* ---- Tech grid: single column ---- */
   .tech-grid   { grid-template-columns: 1fr; }
 
-  /* ---- Roadmap: allow horizontal scroll on narrow viewports ---- */
+  /* ---- Roadmap: horizontal scroll on narrow viewports ---- */
   .roadmap-track { overflow-x: auto; padding-bottom: 0.5rem; }
 
-  /* ---- Stats: 2-up ---- */
+  /* ---- Stats: 2-up, smaller number ---- */
   .stats-grid  { grid-template-columns: repeat(2, 1fr); }
+  .stat-value  { font-size: 1.8rem; }
+  .stat-label  { font-size: 0.54rem; }
+
+  /* ---- Impact grid: value scaling ---- */
+  .impact-value { font-size: 1.6rem; }
+  .impact-label { font-size: 0.56rem; }
 
   /* ---- Section padding ---- */
   #secao-1, #secao-op,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 3.5rem 1rem; }
+  #secao-1 { padding-top: 4.5rem; }
 
   /* ---- Roadmap labels ---- */
   .rm-label   { font-size: 0.6rem; }
-  .rm-label small { display: none; } /* hide dates on very small viewports */
+  .rm-label small { display: none; }
 
   /* ---- Comparative table: touch scroll ---- */
   .comp-table-wrapper { -webkit-overflow-scrolling: touch; }
 
-  /* ---- HUD corners hidden on very small scene ---- */
-  .hero-drone-scene::before { display: none; }
-
   /* ---- Section badges: tighter ---- */
   .section-badge-row { margin-bottom: 1.5rem; }
 
-  /* ---- Mission phase header: hide status chip ---- */
-  .mphdr-status { display: none; }
-
-  /* ---- Mission controls: center-align ---- */
-  .mission-ctrl { justify-content: center; }
-
   /* ---- Chart KPI: smaller gap ---- */
-  .chart-kpi { gap: 0.7rem; font-size: 0.6rem; }
+  .chart-kpi {
+    gap:       0.5rem;
+    font-size: 0.58rem;
+    flex-wrap: wrap;
+  }
+  .kpi-sep { display: none; }
 
   /* ---- Specs table: single column ---- */
   .specs-two-col { grid-template-columns: 1fr; }
 
   /* ---- Timeline node name ---- */
-  .tl-name { font-size: 0.85rem; }
+  .tl-name   { font-size: 0.85rem; }
+  .tl-date   { font-size: 0.62rem; }
+  .tl-status { font-size: 0.55rem; padding: 0.08rem 0.4rem; }
 
   /* ---- Component tabs: horizontal scroll instead of wrap ---- */
   .comp-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
   .comp-tab  { white-space: nowrap; flex-shrink: 0; }
 
   /* ---- Chart canvases: never overflow their wrapper ---- */
-  .chart-wrap        { overflow: hidden; }
+  .chart-wrap        { overflow: hidden; padding: 1rem; }
   .chart-wrap canvas { width: 100% !important; }
 
   /* ---- Roadmap nodes: tighter on phones ---- */
   .roadmap-node { padding: 0.5rem 0.4rem; min-width: 52px; }
-  .rm-icon      { font-size: 1.2rem; }
+  .rm-circle    { width: 2rem; height: 2rem; font-size: 0.62rem; }
+
+  /* ---- Mission canvas: keep aspect ratio ---- */
+  #mission-canvas { height: auto; }
+
+  /* ---- Subsection title: reduce spacing ---- */
+  .subsection-title { margin: 2rem 0 1rem; font-size: 0.62rem; }
 }
 
 /* ============================================================
@@ -151,14 +228,100 @@
 @media (max-width: 480px) {
   /* ---- Impact grid: single column ---- */
   .impact-grid { grid-template-columns: 1fr; }
+
+  /* ---- Hero: tighten section minimum height ---- */
+  #secao-1 { min-height: auto; padding-top: 5rem; padding-bottom: 3rem; }
+
+  /* ---- Timeline: phase header layout on small phones ---- */
+  .tl-phase  { font-size: 0.62rem; }
+  .tl-name   { width: 100%; font-size: 0.82rem; }
+  .tl-date   { font-size: 0.58rem; }
+
+  /* ---- Mission phase items: 2 per row max ---- */
+  .phase-item { flex: 1 1 calc(50% - 4px); }
+
+  /* ---- Subsys/comp grid: force 1 column on true phones ---- */
+  .subsys-grid { grid-template-columns: 1fr; }
+  .comp-grid   { grid-template-columns: 1fr; }
+
+  /* ---- Chart KPI: stack vertically ---- */
+  .chart-kpi { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+}
+
+/* ============================================================
+   STANDARD PHONE  ≤ 430px
+   ============================================================ */
+@media (max-width: 430px) {
+
+  /* ---- Section padding: minimum breathing room ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 3rem 0.85rem; }
+  #secao-1 { padding-top: 4.5rem; }
+
+  /* ---- Hero text ---- */
+  .hero-title    { font-size: 2.9rem; }
+  .hero-subtitle { font-size: 0.82rem; }
+  .hero-tel      { gap: 0.4rem; }
+  .hero-tel span { font-size: 0.62rem; padding: 0.2rem 0.5rem; }
+
+  /* ---- Nav padding ---- */
+  #navbar { padding: 0.65rem 0.85rem; }
+
+  /* ---- Section title: reduce letter-spacing ---- */
+  .section-title { letter-spacing: 0.2em; font-size: 0.78rem; }
+
+  /* ---- Stats: 2-up, tighter ---- */
+  .stat-block  { padding: 1.2rem 0.6rem; }
+  .stat-value  { font-size: 1.6rem; }
+
+  /* ---- Impact cards: tighter ---- */
+  .impact-card  { padding: 1.2rem 0.8rem; }
+  .impact-value { font-size: 1.4rem; }
+
+  /* ---- Phase items: full width on very small phones ---- */
+  .phase-item { flex: 1 1 100%; }
+
+  /* ---- Timeline: reduce padding ---- */
+  .timeline { padding-left: 1.8rem; }
+  .tl-dot   { left: -1.6rem; }
+  .tl-header { padding: 0.6rem 0.6rem; gap: 0.3rem 0.5rem; }
+  .tl-body   { padding: 0 0.6rem; }
+
+  /* ---- Roadmap: tightest ---- */
+  .rm-circle  { width: 1.8rem; height: 1.8rem; font-size: 0.58rem; }
+  .rm-label   { font-size: 0.55rem; }
+
+  /* ---- Chart wrap: minimal padding ---- */
+  .chart-wrap { padding: 0.8rem; margin: 1.5rem 0; }
+  .chart-title { font-size: 0.6rem; letter-spacing: 0.15em; }
+
+  /* ---- Subsection titles ---- */
+  .subsection-title { font-size: 0.6rem; letter-spacing: 0.18em; }
+
+  /* ---- Comp tab: smaller text ---- */
+  .comp-tab { font-size: 0.62rem; padding: 0.45rem 0.9rem; }
+
+  /* ---- Back-to-top: less intrusive ---- */
+  #btn-topo { right: 1rem; bottom: 1rem; padding: 0.4rem 0.7rem; font-size: 0.7rem; }
 }
 
 /* ============================================================
    VERY SMALL  ≤ 380px
    ============================================================ */
 @media (max-width: 380px) {
-  .hero-title    { font-size: 2.8rem; }
+  .hero-title    { font-size: 2.6rem; }
   .stats-grid    { grid-template-columns: repeat(2, 1fr); }
-  .phase-item    { flex: 1 1 100%; }
-  .hero-tel span { font-size: 0.65rem; }
+  .hero-tel span { font-size: 0.6rem; }
+
+  /* ---- Section padding: absolute minimum ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 2.8rem 0.7rem; }
+  #secao-1 { padding-top: 4rem; }
+
+  /* ---- Roadmap line removal at this width — labels barely fit ---- */
+  .roadmap-line { display: none; }
 }
