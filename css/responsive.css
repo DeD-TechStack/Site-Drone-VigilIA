@@ -1,0 +1,358 @@
+/* ==============================================
+   responsive.css — Media queries (must load last)
+   ============================================== */
+
+/* ============================================================
+   LARGE DESKTOP  ≤ 1200px
+   Smooth the transition before the layout hits its max-width.
+   ============================================================ */
+@media (max-width: 1200px) {
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding-left: 3rem; padding-right: 3rem; }
+}
+
+/* ============================================================
+   MEDIUM DESKTOP  ≤ 1024px
+   Pre-hamburger nav compression + layout step-down.
+   ============================================================ */
+@media (max-width: 1024px) {
+
+  /* ---- Section padding step ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 5rem 2.5rem; }
+
+  /* ---- Nav links: tighter gap and slightly smaller text to prevent overflow ---- */
+  .nav-links        { gap: 1.1rem; }
+  .nav-links a      { font-size: 0.75rem; letter-spacing: 0.1em; }
+
+  /* ---- Hero: constrain visual panel ---- */
+  .hero-visual { width: 420px; }
+
+  /* ---- Tech grid: 2 columns ---- */
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* ---- Subsys grid: narrower min ---- */
+  .subsys-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+  /* ---- Roadmap: slightly tighter nodes ---- */
+  .rm-circle  { width: 2.6rem; height: 2.6rem; font-size: 0.7rem; }
+  .rm-label   { font-size: 0.65rem; }
+
+  /* ---- Section title: reduce letter-spacing early to prevent wide wrapping ---- */
+  .section-title  { letter-spacing: 0.25em; }
+}
+
+/* ============================================================
+   TABLET / SMALL DESKTOP  ≤ 900px
+   ============================================================ */
+@media (max-width: 900px) {
+
+  /* ---- Navbar: show hamburger, hide inline links ---- */
+  .nav-toggle { display: flex; }
+
+  #navbar {
+    flex-wrap: wrap;
+    padding:   0.75rem 1.2rem;
+  }
+
+  /* Nav links collapse to a hidden dropdown until .nav-open */
+  .nav-links {
+    display:        none;
+    flex-direction: column;
+    gap:            0;
+    width:          100%;
+    order:          3;
+    border-top:     1px solid rgba(0,50,0,0.4);
+    padding:        0.4rem 0 0.6rem;
+    background:     rgba(0,5,0,0.98);
+  }
+  .nav-links a::after { display: none; }
+
+  .nav-links li a {
+    display:        block;
+    padding:        0.6rem 0.8rem;
+    font-size:      0.82rem;
+    letter-spacing: 0.14em;
+    border-bottom:  1px solid rgba(0,40,0,0.35);
+    transition:     background var(--t-std), color var(--t-std), padding-left var(--t-std);
+  }
+  .nav-links li a:hover,
+  .nav-links li a.active {
+    background:   rgba(0,20,0,0.5);
+    padding-left: 1.2rem;
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+  #navbar.nav-open .nav-links { display: flex; }
+
+  /* ---- Hero: stack vertically ---- */
+  .hero-wrapper {
+    flex-direction: column;
+    gap:            2.5rem;
+  }
+  .hero-visual {
+    width:     100%;
+    max-width: 540px;
+    margin:    0 auto;
+  }
+
+  /* ---- Mission: single column ---- */
+  .mission-layout { grid-template-columns: 1fr; }
+  .mphdr-status   { display: none; }
+  .mission-ctrl   { flex: 0 0 100%; justify-content: center; }
+  .mission-phases { flex-direction: row; flex-wrap: wrap; }
+  .phase-item     { flex: 1 1 calc(33% - 4px); }
+
+  /* ---- Mission detail: ensure canvas area has room ---- */
+  .mission-detail { min-width: 0; }
+
+  /* ---- Tech grid: 2 columns ---- */
+  .tech-grid { grid-template-columns: 1fr 1fr; }
+
+  /* ---- Impact grid: 2-column cap — prevents 3+1 layout at 768px ---- */
+  .impact-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* ---- Section padding ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 4rem 1.5rem; }
+  #secao-1 { padding-top: 5rem; }
+
+  /* ---- Roadmap: scroll wrapper at tablet — 7 nodes are tight ---- */
+  .roadmap-track {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap:        0.25rem;
+    padding:    1.5rem 0 2.5rem;
+  }
+  /* Minimum node width prevents labels from overlapping */
+  .roadmap-node { min-width: 72px; }
+  .rm-circle    { width: 2.4rem; height: 2.4rem; font-size: 0.68rem; }
+  .rm-label     { font-size: 0.62rem; }
+  .rm-label small { font-size: 0.58rem; }
+
+  /* ---- Specs two-col: reduce gap ---- */
+  .specs-two-col { gap: 1.2rem; }
+
+  /* ---- Stats: smaller font ---- */
+  .stat-value { font-size: 2rem; }
+
+  /* ---- Section title: prevent layout-breaking wrapping ---- */
+  .section-title { letter-spacing: 0.22em; overflow-wrap: break-word; word-break: break-word; }
+}
+
+/* ============================================================
+   MOBILE  ≤ 600px
+   ============================================================ */
+@media (max-width: 600px) {
+
+  /* ---- Hero ---- */
+  .hero-title { font-size: 3.2rem; }
+  .hero-tag   { font-size: 0.6rem; }
+  .hero-tel   { gap: 0.5rem; font-size: 0.68rem; }
+  .hero-cta   { width: 100%; text-align: center; padding: 0.8rem 1.5rem; }
+
+  /* ---- Drone scene ---- */
+  .hero-drone-scene         { min-height: 200px; }
+  .hero-drone-scene::before { display: none; }
+
+  /* ---- Phase items: 2-up ---- */
+  .phase-item { flex: 1 1 calc(50% - 4px); }
+
+  /* ---- Mission controls ---- */
+  .mission-ctrl { justify-content: center; }
+  .mphdr-status { display: none; }
+
+  /* ---- mphdr name: don't let it overflow its flex row ---- */
+  .mphdr-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ---- Tech grid: single column ---- */
+  .tech-grid { grid-template-columns: 1fr; }
+
+  /* ---- Stats: 2-up, smaller number ---- */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-value { font-size: 1.8rem; }
+  .stat-label { font-size: 0.54rem; }
+
+  /* ---- Impact grid: single column ---- */
+  .impact-grid  { grid-template-columns: 1fr; }
+  .impact-value { font-size: 1.6rem; }
+  .impact-label { font-size: 0.56rem; }
+
+  /* ---- Section padding ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 3.5rem 1rem; }
+  #secao-1 { padding-top: 4.5rem; }
+
+  /* ---- Roadmap labels ---- */
+  .rm-label small { display: none; }
+  .rm-circle      { width: 2rem; height: 2rem; font-size: 0.62rem; }
+
+  /* ---- Comparative table: touch scroll ---- */
+  .comp-table-wrapper {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+
+  /* ---- Section badges ---- */
+  .section-badge-row { margin-bottom: 1.5rem; }
+
+  /* ---- Chart KPI: tighter gap, hide separators ---- */
+  .chart-kpi {
+    gap:       0.5rem;
+    font-size: 0.58rem;
+    flex-wrap: wrap;
+  }
+  .kpi-sep { display: none; }
+
+  /* ---- Specs table: single column ---- */
+  .specs-two-col { grid-template-columns: 1fr; }
+
+  /* ---- Timeline ---- */
+  .tl-name   { font-size: 0.85rem; }
+  .tl-date   { font-size: 0.62rem; }
+  .tl-status { font-size: 0.55rem; padding: 0.08rem 0.4rem; }
+
+  /* ---- Component tabs: horizontal scroll ---- */
+  .comp-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
+  .comp-tab  { white-space: nowrap; flex-shrink: 0; }
+
+  /* ---- Chart canvas: fill wrapper (already width: 100% from base, this reinforces) ---- */
+  .chart-wrap { padding: 1rem; }
+
+  /* ---- Roadmap nodes ---- */
+  .roadmap-node { padding: 0.5rem 0.4rem; }
+
+  /* ---- Subsection title: reduce spacing ---- */
+  .subsection-title { margin: 2rem 0 1rem; font-size: 0.62rem; }
+
+  /* ---- Chart heights: reduce on mobile to avoid excess vertical space ---- */
+  #canvas-energia   { height: 220px; }
+  #canvas-gantt     { height: 200px; }
+  #canvas-autonomia { height: 180px; }
+  #canvas-escala    { height: 200px; }
+}
+
+/* ============================================================
+   NARROW  ≤ 480px
+   ============================================================ */
+@media (max-width: 480px) {
+
+  /* ---- Hero: release min-height constraint ---- */
+  #secao-1 { min-height: auto; padding-top: 5rem; padding-bottom: 3rem; }
+
+  /* ---- Timeline: header wraps, name gets full row ---- */
+  .tl-phase { font-size: 0.62rem; }
+  .tl-name  { width: 100%; font-size: 0.82rem; }
+  .tl-date  { font-size: 0.58rem; }
+
+  /* ---- Mission phase items: 2 per row max ---- */
+  .phase-item { flex: 1 1 calc(50% - 4px); }
+
+  /* ---- Subsys/comp grid: 1 column ---- */
+  .subsys-grid { grid-template-columns: 1fr; }
+  .comp-grid   { grid-template-columns: 1fr; }
+
+  /* ---- Chart KPI: stack vertically on true phones ---- */
+  .chart-kpi { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+
+  /* ---- Donut canvas: slightly taller to keep legend readable ---- */
+  #canvas-donut { height: 260px; }
+}
+
+/* ============================================================
+   STANDARD PHONE  ≤ 430px
+   ============================================================ */
+@media (max-width: 430px) {
+
+  /* ---- Section padding: minimum breathing room ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 3rem 0.85rem; }
+  #secao-1 { padding-top: 4.5rem; }
+
+  /* ---- Hero text ---- */
+  .hero-title    { font-size: 2.9rem; }
+  .hero-subtitle { font-size: 0.82rem; }
+  .hero-tel      { gap: 0.4rem; }
+  .hero-tel span { font-size: 0.62rem; padding: 0.2rem 0.5rem; }
+
+  /* ---- Nav padding ---- */
+  #navbar { padding: 0.65rem 0.85rem; }
+
+  /* ---- Section title: minimal letter-spacing ---- */
+  .section-title { letter-spacing: 0.18em; font-size: 0.78rem; }
+
+  /* ---- Stats: tighter cards ---- */
+  .stat-block  { padding: 1.2rem 0.6rem; }
+  .stat-value  { font-size: 1.6rem; }
+
+  /* ---- Impact cards: tighter ---- */
+  .impact-card  { padding: 1.2rem 0.8rem; }
+  .impact-value { font-size: 1.4rem; }
+
+  /* ---- Phase items: full width ---- */
+  .phase-item { flex: 1 1 100%; }
+
+  /* ---- Timeline: tighter layout ---- */
+  .timeline  { padding-left: 1.8rem; }
+  .tl-dot    { left: -1.6rem; }
+  .tl-header { padding: 0.6rem; gap: 0.3rem 0.5rem; }
+  .tl-body   { padding: 0 0.6rem; }
+
+  /* ---- Roadmap: tightest ---- */
+  .rm-circle { width: 1.8rem; height: 1.8rem; font-size: 0.58rem; }
+  .rm-label  { font-size: 0.55rem; }
+
+  /* ---- Chart wrap: minimal padding ---- */
+  .chart-wrap  { padding: 0.8rem; margin: 1.5rem 0; }
+  .chart-title { font-size: 0.6rem; letter-spacing: 0.15em; }
+
+  /* ---- Subsection titles ---- */
+  .subsection-title { font-size: 0.6rem; letter-spacing: 0.18em; }
+
+  /* ---- Component tabs: smaller text ---- */
+  .comp-tab { font-size: 0.62rem; padding: 0.45rem 0.9rem; }
+
+  /* ---- Back-to-top: less intrusive ---- */
+  #btn-topo { right: 1rem; bottom: 1rem; padding: 0.4rem 0.7rem; font-size: 0.7rem; }
+
+  /* ---- Footer: tighter ---- */
+  .footer-block { margin-top: 2rem; }
+  .footer-note  { font-size: 0.6rem; }
+}
+
+/* ============================================================
+   VERY SMALL  ≤ 380px
+   ============================================================ */
+@media (max-width: 380px) {
+  .hero-title    { font-size: 2.6rem; }
+  .hero-tel span { font-size: 0.6rem; }
+
+  /* ---- Section padding: absolute minimum ---- */
+  #secao-1, #secao-op,
+  #secao-2, #secao-3,
+  #secao-4, #secao-5,
+  #secao-6, #secao-7 { padding: 2.8rem 0.7rem; }
+  #secao-1 { padding-top: 4rem; }
+
+  /* ---- Stats: still 2-column but tighter ---- */
+  .stats-grid  { grid-template-columns: repeat(2, 1fr); }
+  .stat-value  { font-size: 1.4rem; }
+  .stat-block  { padding: 1rem 0.4rem; }
+
+  /* ---- Roadmap: hide connecting line ---- */
+  .roadmap-line { display: none; }
+
+  /* ---- Reduce chart heights further ---- */
+  #canvas-energia   { height: 200px; }
+  #canvas-gantt     { height: 180px; }
+  #canvas-autonomia { height: 160px; }
+}

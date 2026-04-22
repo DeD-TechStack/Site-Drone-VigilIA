@@ -1,0 +1,146 @@
+/* ==============================================
+   sections.css — Section-specific visuals
+   Hero drone image, HUD overlay, vignette
+   ============================================== */
+
+/* ============================================
+   HERO — Drone image panel
+   ============================================ */
+.hero-visual {
+  flex-shrink: 0;
+  width:       500px;
+  position:    relative;
+}
+.hero-drone-scene {
+  position:   relative;
+  border:     1px solid rgba(0,80,0,0.45);
+  overflow:   hidden;
+  min-height: 280px;
+  background: radial-gradient(ellipse at 50% 45%, rgba(0,28,0,0.9) 0%, #000a00 80%);
+}
+/* HUD corner brackets — four corners using ::before with multi-gradient */
+.hero-drone-scene::before {
+  content:        '';
+  position:       absolute;
+  inset:          0;
+  z-index:        3;
+  pointer-events: none;
+  background:
+    /* TL — horizontal */
+    linear-gradient(to right, rgba(0,255,65,0.55) 2px, transparent 2px) 0 0 / 22px 22px no-repeat,
+    /* TL — vertical */
+    linear-gradient(to bottom, rgba(0,255,65,0.55) 2px, transparent 2px) 0 0 / 22px 22px no-repeat,
+    /* TR — horizontal */
+    linear-gradient(to left, rgba(0,255,65,0.55) 2px, transparent 2px) 100% 0 / 22px 22px no-repeat,
+    /* TR — vertical */
+    linear-gradient(to bottom, rgba(0,255,65,0.55) 2px, transparent 2px) 100% 0 / 22px 22px no-repeat,
+    /* BL — horizontal */
+    linear-gradient(to right, rgba(0,255,65,0.55) 2px, transparent 2px) 0 100% / 22px 22px no-repeat,
+    /* BL — vertical */
+    linear-gradient(to top, rgba(0,255,65,0.55) 2px, transparent 2px) 0 100% / 22px 22px no-repeat,
+    /* BR — horizontal */
+    linear-gradient(to left, rgba(0,255,65,0.55) 2px, transparent 2px) 100% 100% / 22px 22px no-repeat,
+    /* BR — vertical */
+    linear-gradient(to top, rgba(0,255,65,0.55) 2px, transparent 2px) 100% 100% / 22px 22px no-repeat;
+}
+.drone-img {
+  width:      100%;
+  display:    block;
+  filter:     saturate(0.4) brightness(0.75) sepia(0.3) hue-rotate(80deg);
+  transition: filter var(--t-slow);
+}
+/* SVG diagrams already styled — skip the photo filter */
+.drone-img[src$=".svg"] { filter: none; }
+.hero-drone-scene:hover .drone-img {
+  filter: saturate(0.6) brightness(0.88) sepia(0.2) hue-rotate(80deg);
+}
+.hero-drone-scene:hover .drone-img[src$=".svg"] {
+  filter: brightness(1.1) drop-shadow(0 0 6px rgba(0,255,65,0.2));
+}
+
+/* Vignette gradient + subtle center glow */
+.hero-drone-scene::after {
+  content:        '';
+  position:       absolute;
+  inset:          0;
+  z-index:        2;
+  background:
+    linear-gradient(180deg, rgba(0,5,0,0.3) 0%, transparent 25%, transparent 70%, rgba(0,5,0,0.5) 100%),
+    linear-gradient(90deg,  rgba(0,5,0,0.4) 0%, transparent 18%, transparent 82%, rgba(0,5,0,0.4) 100%);
+  pointer-events: none;
+}
+
+/* ============================================
+   HERO — HUD overlay (purely decorative)
+   ============================================ */
+.hud-overlay {
+  position:       absolute;
+  inset:          0;
+  pointer-events: none;
+  z-index:        4; /* above ::before brackets and ::after vignette */
+}
+
+/* Corner data panels */
+.hud-corner {
+  position:       absolute;
+  display:        flex;
+  flex-direction: column;
+  gap:            3px;
+  padding:        9px 11px;
+  background:     rgba(0,8,0,0.72);
+  border:         1px solid rgba(0,100,0,0.5);
+  backdrop-filter: blur(2px);
+}
+.hud-tl { top: 0;    left: 0;  border-top: none;    border-left: none;  }
+.hud-tr { top: 0;    right: 0; border-top: none;    border-right: none; text-align: right; }
+.hud-bl { bottom: 0; left: 0;  border-bottom: none; border-left: none;  }
+.hud-br { bottom: 0; right: 0; border-bottom: none; border-right: none; text-align: right; }
+
+.hud-line {
+  font-size:      0.62rem;
+  letter-spacing: 0.12em;
+  color:          rgba(0,180,50,0.8);
+  display:        block;
+}
+.hud-line strong { color: var(--green); }
+
+/* Crosshair */
+.hud-crosshair {
+  position:  absolute;
+  top:       50%;
+  left:      50%;
+  transform: translate(-50%, -50%);
+}
+.crosshair-ring {
+  position:      absolute;
+  top:           50%;
+  left:          50%;
+  transform:     translate(-50%, -50%);
+  width:         56px;
+  height:        56px;
+  border-radius: 50%;
+  border:        1px solid rgba(0,255,65,0.35);
+  animation:     ring-pulse 2.2s ease-out infinite;
+}
+.ring-2 {
+  width:           85px;
+  height:          85px;
+  animation-delay: 0.7s;
+  border-color:    rgba(0,255,65,0.18);
+}
+.crosshair-dot {
+  width:         5px;
+  height:        5px;
+  border-radius: 50%;
+  background:    var(--green);
+  box-shadow:    0 0 8px var(--green), 0 0 2px var(--green);
+}
+
+/* Animated scan line */
+.hud-scanline {
+  position:   absolute;
+  left: 0; right: 0;
+  height:     1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,255,65,0.06) 20%, rgba(0,255,65,0.35) 50%, rgba(0,255,65,0.06) 80%, transparent 100%);
+  animation:  scan-sweep 4s linear infinite;
+}

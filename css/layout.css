@@ -1,0 +1,237 @@
+/* ==============================================
+   layout.css — Page structure, grids, containers
+   ============================================== */
+
+/* --- Matrix background canvas (full-page fixed layer) --- */
+#matrix-canvas {
+  position:       fixed;
+  top: 0; left: 0;
+  width:          100%;
+  height:         100%;
+  z-index:        0;
+  pointer-events: none;
+  opacity:        0.18;
+}
+
+/* --- Section fade-in (toggled by JS IntersectionObserver) --- */
+section {
+  opacity:    0;
+  transform:  translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+section.visible {
+  opacity:   1;
+  transform: translateY(0);
+}
+
+/* --- Shared section container --- */
+.section-container {
+  max-width: 1200px;
+  margin:    0 auto;
+}
+
+/* --- Section headings --- */
+.section-title {
+  font-size:      0.85rem;
+  letter-spacing: 0.35em;
+  color:          var(--green-mid);
+  margin-bottom:  2.5rem;
+  padding-bottom: 0.6rem;
+  position:       relative;
+  border-bottom:  1px solid var(--green-dim);
+}
+/* Bright left accent on the divider line */
+.section-title::after {
+  content:    '';
+  position:   absolute;
+  bottom:     -1px;
+  left:       0;
+  width:      56px;
+  height:     1px;
+  background: var(--green);
+}
+.subsection-title {
+  font-size:      0.68rem;
+  letter-spacing: 0.25em;
+  color:          var(--green-mid);
+  margin:         3rem 0 1.2rem;
+  display:        flex;
+  align-items:    center;
+  gap:            0.8rem;
+}
+/* Trailing line extending to the right */
+.subsection-title::after {
+  content:    '';
+  flex:       1;
+  height:     1px;
+  background: var(--green-dim);
+}
+
+/* --- Section padding and backgrounds --- */
+#secao-1 {
+  min-height:  100vh;
+  display:     flex;
+  align-items: center;
+  padding:     6rem 4rem 4rem;
+  position:    relative;
+  z-index:     1;
+  /* Subtle depth: warm glow toward the visual panel side */
+  background:  radial-gradient(ellipse at 72% 50%, rgba(0,30,0,0.55) 0%, transparent 65%);
+}
+#secao-op {
+  padding:  6rem 4rem;
+  position: relative;
+  z-index:  1;
+}
+#secao-2 {
+  padding:    6rem 4rem;
+  position:   relative;
+  z-index:    1;
+  background: var(--bg2);
+}
+#secao-3 {
+  padding:  6rem 4rem;
+  position: relative;
+  z-index:  1;
+}
+#secao-4 {
+  padding:    6rem 4rem;
+  position:   relative;
+  z-index:    1;
+  background: var(--bg2);
+}
+#secao-5 {
+  padding:  6rem 4rem;
+  position: relative;
+  z-index:  1;
+}
+#secao-6 {
+  padding:    6rem 4rem;
+  position:   relative;
+  z-index:    1;
+  background: var(--bg2);
+}
+#secao-7 {
+  padding:  6rem 4rem;
+  position: relative;
+  z-index:  1;
+}
+
+/* --- Hero layout (flex row with visual panel) --- */
+.hero-wrapper {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  gap:             4rem;
+  width:           100%;
+  max-width:       1200px;
+  margin:          0 auto;
+}
+
+/* --- Subsystems grid --- */
+.subsys-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:                   1rem;
+}
+
+/* --- Component tab panels (visibility) --- */
+.comp-panel        { display: none; }
+.comp-panel.active { display: block; }
+
+/* --- Component cards grid --- */
+.comp-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap:                   1rem;
+}
+
+/* --- Mission simulator layout --- */
+.mission-layout {
+  display:               grid;
+  grid-template-columns: 240px 1fr;
+  gap:                   1.5rem;
+  align-items:           start;
+}
+.mission-phases {
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+}
+
+/* --- Stats grid (performance numbers) --- */
+.stats-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap:                   1px;
+  background:            var(--green-dim);
+  border:                1px solid var(--green-dim);
+  margin-bottom:         3rem;
+}
+
+/* --- Impact metrics grid --- */
+.impact-grid {
+  display:               grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap:                   1px;
+  background:            var(--green-dim);
+  border:                1px solid var(--green-dim);
+  margin-bottom:         2.5rem;
+}
+
+/* --- Specs two-column layout --- */
+.specs-two-col {
+  display:               grid;
+  grid-template-columns: 1fr 1fr;
+  gap:                   2rem;
+}
+
+/* --- Technology goals grid (4 columns) --- */
+.tech-grid {
+  display:               grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:                   1rem;
+}
+
+/* --- Roadmap timeline track --- */
+.roadmap-track {
+  position:        relative;
+  display:         flex;
+  justify-content: space-between;
+  align-items:     flex-start;
+  padding:         2rem 0 3rem;
+  gap:             0.5rem;
+}
+.roadmap-line {
+  position:   absolute;
+  top:        3rem;
+  left: 2rem; right: 2rem;
+  height:     1px;
+  background: var(--green-dim);
+}
+
+/* --- Comparative table horizontal scroll wrapper --- */
+.comp-table-wrapper {
+  overflow-x: auto;
+}
+
+/* --- Generic table scroll wrapper (energy, cost, risk tables) --- */
+.table-scroll-wrap {
+  overflow-x:              auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom:           0.5rem;
+}
+
+/* --- Timeline vertical track --- */
+.timeline {
+  position:     relative;
+  padding-left: 2.5rem;
+}
+.timeline::before {
+  content:    '';
+  position:   absolute;
+  left:       0.55rem;
+  top: 0; bottom: 0;
+  width:      1px;
+  background: var(--green-dim);
+}
