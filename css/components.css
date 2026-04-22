@@ -626,7 +626,7 @@
   border-bottom: 1px solid rgba(0,255,65,0.4);
   border-right:  1px solid rgba(0,255,65,0.4);
 }
-#mission-canvas   { display: block; width: 100%; height: auto; }
+#mission-canvas   { display: block; width: 100%; height: 260px; }
 .mission-stat-row {
   display:       flex;
   gap:           1.5rem;

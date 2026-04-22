@@ -105,11 +105,12 @@ function initRoadmapNodes() {
       // Expand the target timeline node
       tlNode.classList.add('expanded');
 
-      // Scroll into view then flash-highlight on arrival
+      // Scroll into view after the max-height transition completes (420ms),
+      // then flash-highlight on arrival.
       setTimeout(function () {
         tlNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
         flashTlNode(tlNode);
-      }, 50);
+      }, 460);
     }
 
     node.addEventListener('click', activate);

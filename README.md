@@ -6,22 +6,22 @@ Site estático do projeto VigilIA. Sem build step, sem bundler.
 
 **Opção 1 — VS Code Live Server (recomendado)**
 1. Instale a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-2. Clique com botão direito em `vigilia.html` → *Open with Live Server*
-3. Acesse `http://127.0.0.1:5500/vigilia.html`
+2. Abra a pasta raiz do projeto no VS Code e clique em *Go Live*
+3. Acesse `http://127.0.0.1:5500` — o `index.html` da raiz redireciona automaticamente para o site
 
 **Opção 2 — Python**
 ```
 python -m http.server 5500
 ```
-Acesse `http://localhost:5500/vigilia.html`
+Acesse `http://localhost:5500`
 
-> Abrir `vigilia.html` diretamente no browser via `file://` também funciona para leitura,
-> mas algumas fontes e assets externos podem não carregar.
+> Abrir `Site-Drone-VigilIA/index.html` diretamente no browser via `file://` também funciona
+> para leitura, mas algumas fontes e assets externos podem não carregar.
 
 ## Estrutura de arquivos
 
 ```
-vigilia.html          — página principal (single-page)
+index.html            — página principal (single-page)
 
 css/
   base.css            — reset, ~20 design tokens (:root), tipografia base
@@ -56,4 +56,5 @@ Todos os `<canvas>` são dimensionados para o Device Pixel Ratio do display:
 
 ## Ponto de entrada
 
-`vigilia.html` é a única página. Todos os links internos são âncoras (`#secao-1`, `#secao-op`, etc.).
+`Site-Drone-VigilIA/index.html` é a única página. Todos os links internos são âncoras (`#secao-1`, `#secao-op`, etc.).
+O `index.html` na raiz do repositório redireciona automaticamente para ela.

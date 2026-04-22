@@ -36,7 +36,11 @@ function initMatrixRain() {
     setInterval(draw, 50);
   }
 
-  window.addEventListener('resize', resize);
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 120);
+  });
 }
 
 window.addEventListener('load', initMatrixRain);
