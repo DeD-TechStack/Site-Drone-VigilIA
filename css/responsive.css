@@ -7,7 +7,7 @@
    Smooth the transition before the layout hits its max-width.
    ============================================================ */
 @media (max-width: 1200px) {
-  #secao-1, #secao-op,
+  #secao-1, #secao-op, #secao-proposito,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding-left: 3rem; padding-right: 3rem; }
@@ -20,7 +20,7 @@
 @media (max-width: 1024px) {
 
   /* ---- Section padding step ---- */
-  #secao-1, #secao-op,
+  #secao-1, #secao-op, #secao-proposito,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 5rem 2.5rem; }
@@ -115,8 +115,11 @@
   /* ---- Impact grid: 2-column cap — prevents 3+1 layout at 768px ---- */
   .impact-grid { grid-template-columns: repeat(2, 1fr); }
 
+  /* ---- Purpose grid: 2 columns at tablet ---- */
+  .purpose-grid { grid-template-columns: repeat(2, 1fr); }
+
   /* ---- Section padding ---- */
-  #secao-1, #secao-op,
+  #secao-1, #secao-op, #secao-proposito,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 4rem 1.5rem; }
@@ -183,8 +186,11 @@
   .impact-value { font-size: 1.6rem; }
   .impact-label { font-size: 0.56rem; }
 
+  /* ---- Purpose grid: single column on mobile ---- */
+  .purpose-grid { grid-template-columns: 1fr; }
+
   /* ---- Section padding ---- */
-  #secao-1, #secao-op,
+  #secao-1, #secao-op, #secao-proposito,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 3.5rem 1rem; }
@@ -272,7 +278,7 @@
 @media (max-width: 430px) {
 
   /* ---- Section padding: minimum breathing room ---- */
-  #secao-1, #secao-op,
+  #secao-1, #secao-op, #secao-proposito,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 3rem 0.85rem; }
@@ -337,7 +343,7 @@
   .hero-tel span { font-size: 0.6rem; }
 
   /* ---- Section padding: absolute minimum ---- */
-  #secao-1, #secao-op,
+  #secao-1, #secao-op, #secao-proposito,
   #secao-2, #secao-3,
   #secao-4, #secao-5,
   #secao-6, #secao-7 { padding: 2.8rem 0.7rem; }
