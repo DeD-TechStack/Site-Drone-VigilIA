@@ -144,3 +144,69 @@
   background: linear-gradient(90deg, transparent 0%, rgba(0,255,65,0.06) 20%, rgba(0,255,65,0.35) 50%, rgba(0,255,65,0.06) 80%, transparent 100%);
   animation:  scan-sweep 4s linear infinite;
 }
+
+/* ============================================
+   PURPOSE SECTION
+   ============================================ */
+#secao-proposito {
+  padding:    6rem 4rem;
+  position:   relative;
+  z-index:    1;
+  background: var(--bg2);
+}
+.purpose-intro {
+  font-size:     0.9rem;
+  color:         var(--text-body);
+  line-height:   1.9;
+  max-width:     780px;
+  margin-bottom: 2.5rem;
+}
+.purpose-grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   1rem;
+  margin-bottom:         2rem;
+}
+.purpose-card {
+  border:     1px solid var(--green-dim);
+  padding:    1.2rem 1.2rem 1.2rem 1.4rem;
+  background: var(--surface-1);
+  transition: border-color var(--t-std), background var(--t-std), box-shadow var(--t-std);
+  position:   relative;
+}
+.purpose-card::before {
+  content:    '';
+  position:   absolute;
+  left: 0; top: 0; bottom: 0;
+  width:      2px;
+  background: var(--green-dim);
+  transition: background var(--t-std);
+}
+.purpose-card:hover {
+  border-color: rgba(0,160,0,0.4);
+  background:   var(--surface-2);
+  box-shadow:   0 0 24px rgba(0,255,65,0.04), inset 0 0 24px rgba(0,30,0,0.3);
+}
+.purpose-card:hover::before { background: var(--green-mid); }
+.purpose-card-num {
+  font-size:      0.62rem;
+  color:          var(--text-muted);
+  letter-spacing: 0.25em;
+  margin-bottom:  0.5rem;
+}
+.purpose-card h3 {
+  font-size:      0.85rem;
+  letter-spacing: 0.12em;
+  margin-bottom:  0.7rem;
+  color:          var(--green);
+}
+.purpose-card p { font-size: 0.86rem; color: var(--text-body); line-height: 1.85; }
+.purpose-responsible {
+  font-size:   0.72rem;
+  color:       var(--text-muted);
+  line-height: 1.75;
+  padding:     0.9rem 1.1rem;
+  border-left: 2px solid var(--green-dim);
+  background:  rgba(0,20,0,0.2);
+  max-width:   680px;
+}
