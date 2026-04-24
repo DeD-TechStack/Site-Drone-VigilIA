@@ -49,13 +49,8 @@
   filter:     saturate(0.4) brightness(0.75) sepia(0.3) hue-rotate(80deg);
   transition: filter var(--t-slow);
 }
-/* SVG diagrams already styled — skip the photo filter */
-.drone-img[src$=".svg"] { filter: none; }
 .hero-drone-scene:hover .drone-img {
   filter: saturate(0.6) brightness(0.88) sepia(0.2) hue-rotate(80deg);
-}
-.hero-drone-scene:hover .drone-img[src$=".svg"] {
-  filter: brightness(1.1) drop-shadow(0 0 6px rgba(0,255,65,0.2));
 }
 
 /* Vignette gradient + subtle center glow */
